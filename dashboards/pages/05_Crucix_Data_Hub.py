@@ -1,8 +1,8 @@
 """Crucix Data Hub — Live intelligence feeds, signal routing, and source health."""
 
 from __future__ import annotations
-
 import streamlit as st
+import pandas as pd
 
 from dashboards.dashboard_data import (
     AGENT_SECTOR_MAP,
@@ -13,8 +13,12 @@ from dashboards.dashboard_data import (
     load_crucix_status,
     load_latest_briefing_summary,
 )
+from dashboards.components.theme import setup_page, apply_custom_css
+from dashboards.components.empty_state import render_empty_state
 
-st.set_page_config(page_title="Crucix Data Hub", layout="wide")
+setup_page("Crucix Data Hub", "📡")
+apply_custom_css()
+
 st.header("Crucix Data Hub")
 st.caption(
     "Real-time intelligence from 27 OSINT, financial, and geopolitical data sources. "
@@ -40,10 +44,37 @@ col4.metric("Stored Signals", signal_stats.get("total_signals", 0))
 col5.metric("Signal DB", "Active" if crucix["signals_db_exists"] else "Empty")
 
 if not crucix["cloned"]:
-    st.warning(
-        "Crucix is not installed. Run `python -m super_agents crucix setup` to clone and install."
+    render_empty_state(
+        "Crucix is not installed. Run the setup command to enable live intelligence.",
+        "python -m super_agents crucix setup"
     )
     st.stop()
+
+# ---------------------------------------------------------------------------
+# Phase 3: Visualizations (Source health & Signal volume)
+# ---------------------------------------------------------------------------
+st.divider()
+vcol1, vcol2 = st.columns(2)
+
+with vcol1:
+    st.subheader("Source Health")
+    if briefing:
+        health_data = pd.DataFrame({
+            "Status": ["OK", "Error"],
+            "Count": [briefing["ok_sources"], briefing["error_sources"]]
+        })
+        st.bar_chart(health_data.set_index("Status"))
+    else:
+        st.info("No sweep data for health chart.")
+
+with vcol2:
+    st.subheader("Signal Distribution")
+    top_topics = signal_stats.get("top_topics", {})
+    if top_topics:
+        topic_df = pd.Series(top_topics).head(10)
+        st.bar_chart(topic_df)
+    else:
+        st.info("No signal data for distribution chart.")
 
 # ---------------------------------------------------------------------------
 # Latest sweep results
@@ -74,38 +105,6 @@ if briefing:
 else:
     st.info(
         "No sweep data yet. Run `python -m super_agents crucix sweep` to perform the first sweep."
-    )
-
-# ---------------------------------------------------------------------------
-# Signal store
-# ---------------------------------------------------------------------------
-
-st.divider()
-st.subheader("Signal Store")
-
-if signal_stats.get("total_signals", 0) > 0:
-    stats_left, stats_right = st.columns(2)
-
-    with stats_left:
-        st.metric("Total Signals", signal_stats["total_signals"])
-        st.metric("Processed", signal_stats.get("processed", 0))
-        st.metric("Unprocessed", signal_stats.get("unprocessed", 0))
-
-        unique_sources = signal_stats.get("unique_sources", [])
-        if unique_sources:
-            st.markdown(f"**Sources:** {', '.join(sorted(unique_sources))}")
-
-    with stats_right:
-        st.markdown("**Top Topics:**")
-        top_topics = signal_stats.get("top_topics", {})
-        if top_topics:
-            for topic, count in list(top_topics.items())[:15]:
-                st.markdown(f"- {topic}: **{count}**")
-        else:
-            st.caption("No topic data available.")
-else:
-    st.info(
-        "Signal store is empty. Run `python -m super_agents crucix sweep --store` to persist signals."
     )
 
 # ---------------------------------------------------------------------------
@@ -219,15 +218,6 @@ python -m super_agents crucix setup
 python -m super_agents crucix sweep
 
 # Sweep and persist to SQLite
-python -m super_agents crucix sweep --store
-
-# Dry-run signal routing
-python -m super_agents crucix route
-
-# Query stored signals
-python -m super_agents crucix signals --topic maritime --limit 10
-
-# List all source mappings
-python -m super_agents crucix sources""",
+python -m super_agents crucix sweep --store""",
     language="bash",
 )

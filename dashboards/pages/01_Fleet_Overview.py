@@ -1,6 +1,7 @@
 """Fleet Overview — All runnable agents organized by sector."""
 
 import streamlit as st
+import pandas as pd
 
 from dashboards.dashboard_data import (
     AGENT_SECTOR_MAP,
@@ -11,14 +12,21 @@ from dashboards.dashboard_data import (
     load_agent_status,
     load_crucix_status,
 )
+from dashboards.components.theme import setup_page, apply_custom_css
+from dashboards.components.empty_state import render_empty_state
 
-st.set_page_config(page_title="Fleet Overview", layout="wide")
+setup_page("Fleet Overview", "🔬")
+apply_custom_css()
+
 st.header("Agent Fleet Overview")
 
 agents = discover_runnable_agents()
 
 if not agents:
-    st.warning("No runnable agents were discovered. Check `.agent_*` skill scripts.")
+    render_empty_state(
+        "No runnable agents were discovered. Check `.agent_*` skill scripts.",
+        "python -m super_agents list"
+    )
     st.stop()
 
 agents_with_status = sum(1 for agent in agents if load_agent_status(agent["name"]))
@@ -35,6 +43,20 @@ st.caption(
     "Agents discovered from `.agent_*` folders, organized by sector. "
     "Each agent has skills with runnable Python scripts."
 )
+
+# ---------------------------------------------------------------------------
+# Phase 3: Skills-per-agent bar chart
+# ---------------------------------------------------------------------------
+st.divider()
+st.subheader("Capabilities Distribution")
+skill_data = pd.DataFrame([
+    {"Agent": a["label"], "Skills": a["skill_count"], "Scripts": a["script_count"]}
+    for a in agents
+])
+if not skill_data.empty:
+    st.bar_chart(skill_data.set_index("Agent")["Skills"])
+else:
+    st.info("Insufficient agent data for capabilities chart.")
 
 # ---------------------------------------------------------------------------
 # Sector-organized agent grid
@@ -68,12 +90,8 @@ for group_name, group_agents in grouped.items():
 
                 if status:
                     state = status.get("status", "unknown")
-                    color = {
-                        "running": "🟢",
-                        "completed": "🔵",
-                        "failed": "🔴",
-                        "idle": "⚪",
-                    }.get(state, "⚪")
+                    from dashboards.components.theme import get_status_icon
+                    color = get_status_icon(state)
                     st.metric("Status", f"{color} {state}")
                     progress = status.get("progress", {})
                     total = progress.get("total", 0)

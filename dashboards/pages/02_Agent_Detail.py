@@ -1,15 +1,21 @@
 """Agent Detail — Deep dive into a specific agent."""
 
 import streamlit as st
+import pandas as pd
 
 from dashboards.dashboard_data import (
     discover_runnable_agents,
     load_agent_findings,
     load_agent_latest_run,
     load_agent_status,
+    load_all_runs,
 )
+from dashboards.components.theme import setup_page, get_severity_icon, apply_custom_css
+from dashboards.components.empty_state import render_no_agent_data
 
-st.set_page_config(page_title="Agent Detail", layout="wide")
+setup_page("Agent Detail", "🔍")
+apply_custom_css()
+
 st.header("Agent Detail View")
 
 agents = discover_runnable_agents()
@@ -35,6 +41,34 @@ st.caption(agent["description"])
 
 status = load_agent_status(selected)
 latest_run = load_agent_latest_run(selected)
+
+# ---------------------------------------------------------------------------
+# Phase 3: Visualizations (Sparkline & Severity Pie)
+# ---------------------------------------------------------------------------
+st.divider()
+vcol1, vcol2 = st.columns(2)
+
+with vcol1:
+    st.subheader("Performance Trend")
+    all_runs = load_all_runs()
+    agent_runs = [r for r in all_runs if r.get("agent_name") == selected]
+    if agent_runs:
+        durations = [r.get("duration_seconds", 0) for r in reversed(agent_runs[:10])]
+        st.line_chart(durations)
+        st.caption("Duration (seconds) for last 10 runs")
+    else:
+        st.info("No run history available for performance trend.")
+
+with vcol2:
+    st.subheader("Finding Distribution")
+    findings = load_agent_findings(selected)
+    if findings:
+        sev_counts = pd.Series([f.get("severity", "info") for f in findings]).value_counts()
+        st.bar_chart(sev_counts) # Streamlit pie chart is less native, bar is cleaner for small sets
+    else:
+        st.info("No findings available for distribution.")
+
+st.divider()
 
 left, right = st.columns(2)
 
@@ -87,11 +121,10 @@ else:
 st.divider()
 
 st.subheader("Latest Findings")
-findings = load_agent_findings(selected)
 if findings:
     for finding in findings[:20]:
         severity = finding.get("severity", "info")
-        icon = {"critical": "🔴", "high": "🟠", "medium": "🟡", "info": "🔵"}.get(severity, "⚪")
+        icon = get_severity_icon(severity)
         st.write(
             f"{icon} **[{finding.get('finding_type', 'unknown')}]** "
             f"{finding.get('asset', '')} — {finding.get('summary', '')}"
@@ -101,4 +134,4 @@ if findings:
             f"Confidence: {finding.get('confidence', 'N/A')}"
         )
 else:
-    st.info(f"No findings artifact for {agent['label']} yet.")
+    render_no_agent_data(selected)

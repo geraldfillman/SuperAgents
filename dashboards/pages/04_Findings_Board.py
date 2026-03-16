@@ -1,21 +1,51 @@
 """Findings Board — Rolling discoveries across all agents."""
 
 import streamlit as st
+import pandas as pd
 
 from dashboards.dashboard_data import discover_agent_names, load_all_findings
 from dashboards.components.risk_badge import render_risk_badge
+from dashboards.components.theme import setup_page, get_severity_icon, apply_custom_css
+from dashboards.components.empty_state import render_empty_state
 
-st.set_page_config(page_title="Findings Board", layout="wide")
+setup_page("Findings Board", "📢")
+apply_custom_css()
+
 st.header("Findings Board")
 
 agent_names = discover_agent_names()
 findings = load_all_findings(agent_names)
 
 if not findings:
-    st.info("No findings yet. Run agent workflows to generate discoveries.")
+    render_empty_state(
+        "No findings yet. Run agent workflows to generate discoveries.",
+        "python -m super_agents search --verbose"
+    )
     if agent_names:
         st.caption(f"Runnable agents with no findings artifacts yet: {', '.join(agent_names)}")
 else:
+    # ---------------------------------------------------------------------------
+    # Phase 3: Visualizations (Severity distribution & Finding timeline)
+    # ---------------------------------------------------------------------------
+    vcol1, vcol2 = st.columns(2)
+    
+    with vcol1:
+        st.subheader("Severity Distribution")
+        sev_counts = pd.Series([f.get("severity", "info") for f in findings]).value_counts()
+        st.bar_chart(sev_counts)
+        
+    with vcol2:
+        st.subheader("Discovery Timeline")
+        findings_df = pd.DataFrame(findings)
+        if "finding_time" in findings_df.columns:
+            findings_df["finding_time"] = pd.to_datetime(findings_df["finding_time"])
+            timeline = findings_df.set_index("finding_time").resample("D").size()
+            st.line_chart(timeline)
+        else:
+            st.info("Insufficient time data for discovery timeline.")
+
+    st.divider()
+
     col1, col2, col3 = st.columns(3)
     col1.metric("Total Findings", len(findings))
     col2.metric("Agents With Findings", len({finding.get("_agent", "") for finding in findings}))
@@ -44,10 +74,7 @@ else:
     else:
         for finding in filtered[:100]:
             severity = finding.get("severity", "info")
-            icon = {"critical": "🔴", "high": "🟠", "medium": "🟡", "info": "🔵"}.get(
-                severity,
-                "⚪",
-            )
+            icon = get_severity_icon(severity)
             
             # Use risk badge for asset or company
             entity = finding.get("company") or finding.get("asset") or "N/A"

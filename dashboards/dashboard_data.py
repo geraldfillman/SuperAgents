@@ -11,6 +11,7 @@ from urllib.error import URLError
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from urllib.request import urlopen
 
+import streamlit as st
 import yaml
 
 from super_agents.integrations.mirofish.zep import summarize_bundle_activity
@@ -53,6 +54,7 @@ def _safe_load_yaml(path: Path) -> dict[str, Any]:
     return data if isinstance(data, dict) else {}
 
 
+@st.cache_data(ttl=300)
 def discover_runnable_agents(project_root: Path = PROJECT_ROOT) -> list[dict[str, Any]]:
     """Discover runnable agents from on-disk configs and script folders."""
     agents: list[dict[str, Any]] = []
@@ -137,6 +139,7 @@ def load_agent_findings(
     return [item for item in data if isinstance(item, dict)]
 
 
+@st.cache_data(ttl=300)
 def load_all_runs(runs_dir: Path = RUNS_DIR) -> list[dict[str, Any]]:
     """Load run summaries across all agents."""
     runs: list[dict[str, Any]] = []
@@ -165,6 +168,7 @@ def load_all_runs(runs_dir: Path = RUNS_DIR) -> list[dict[str, Any]]:
     return runs
 
 
+@st.cache_data(ttl=300)
 def load_all_findings(
     agent_names: Iterable[str] | None = None,
     dashboards_dir: Path = DASHBOARDS_DIR,
@@ -184,6 +188,7 @@ def load_all_findings(
     return all_findings
 
 
+@st.cache_data(ttl=300)
 def load_calendar_events(
     pattern: str,
     dashboards_dir: Path = DASHBOARDS_DIR,
@@ -365,6 +370,12 @@ AGENT_SECTOR_MAP: dict[str, dict[str, Any]] = {
         "color": "#2ECC71",
         "description": "Pharmaceuticals, drug approvals, clinical trials",
     },
+    "cannabis_psychedelics": {
+        "sector": "cannabis_psychedelics",
+        "icon": "🌿",
+        "color": "#1ABC9C",
+        "description": "Regulatory trends in emerging therapeutic markets",
+    },
     "cybersecurity": {
         "sector": "cybersecurity",
         "icon": "🔒",
@@ -382,6 +393,12 @@ AGENT_SECTOR_MAP: dict[str, dict[str, Any]] = {
         "icon": "🎮",
         "color": "#9B59B6",
         "description": "Game industry, storefronts, player metrics",
+    },
+    "meddevice": {
+        "sector": "meddevice",
+        "icon": "🩺",
+        "color": "#3498DB",
+        "description": "Medical devices, diagnostics, and health tech",
     },
     "quantum": {
         "sector": "quantum",
@@ -407,6 +424,12 @@ AGENT_SECTOR_MAP: dict[str, dict[str, Any]] = {
         "color": "#95A5A6",
         "description": "Scenario simulation and what-if analysis",
     },
+    "space": {
+        "sector": "space",
+        "icon": "🌌",
+        "color": "#2C3E50",
+        "description": "Commercial space, orbital economy, and launch",
+    },
 }
 
 
@@ -426,9 +449,9 @@ def group_agents_by_sector(
     """Group agents into sector categories for organized display."""
     # Define sector groupings
     groups: dict[str, list[str]] = {
-        "Intelligence & Defense": ["aerospace", "cybersecurity", "autonomous_vehicles"],
-        "Markets & Finance": ["fintech", "rare_earth", "renewable_energy"],
-        "Science & Technology": ["biotech", "quantum", "gaming"],
+        "Intelligence & Defense": ["aerospace", "cybersecurity", "autonomous_vehicles", "space"],
+        "Markets & Finance": ["fintech", "rare_earth", "renewable_energy", "cannabis_psychedelics"],
+        "Science & Technology": ["biotech", "quantum", "gaming", "meddevice"],
         "Operations": ["simulation"],
     }
 
@@ -470,6 +493,7 @@ def load_crucix_source_map() -> dict[str, dict[str, Any]]:
         return {}
 
 
+@st.cache_data(ttl=300)
 def load_crucix_signal_stats() -> dict[str, Any]:
     """Load signal store statistics if the DB exists."""
     if not CRUCIX_SIGNALS_DB.exists():
@@ -508,6 +532,7 @@ def load_latest_briefing_summary() -> dict[str, Any] | None:
     }
 
 
+@st.cache_data(ttl=300)
 def discover_simulation_results(
     sim_dir: Path = SIMULATION_RUNS_DIR,
 ) -> list[dict[str, Any]]:
@@ -547,6 +572,7 @@ def datetime_from_path(path: Path) -> str | None:
     return datetime.fromtimestamp(path.stat().st_mtime).isoformat()
 
 
+@st.cache_data(ttl=300)
 def discover_simulation_bundles(
     processed_dir: Path = MIROFISH_BUNDLES_DIR,
 ) -> list[dict[str, Any]]:
