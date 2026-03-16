@@ -1,0 +1,66 @@
+# =============================================================================
+# Cybersecurity Agent -- Master Configuration
+# =============================================================================
+# Registers all skills, workflows, and data sources for the
+# Cybersecurity Company & Vulnerability Tracker agent.
+
+agent:
+  name: cybersecurity
+  version: "0.1.0"
+  description: >
+    Asset-first tracking system for cybersecurity vendors and vulnerability
+    disclosures. Primary unit of analysis is the product, platform, or CVE,
+    not the company.
+
+# ---------------------------------------------------------------------------
+# Skills -- specialized capabilities the agent can invoke
+# ---------------------------------------------------------------------------
+skills:
+  - name: threat_landscape
+    path: skills/threat_landscape/SKILL.md
+    description: Track CISA KEV additions, ransomware-linked exposures, and watchlist matches
+
+  - name: calendar
+    path: skills/calendar/SKILL.md
+    description: Build rolling patch and remediation calendars from KEV due dates
+
+  - name: financial_monitor
+    path: skills/financial_monitor/SKILL.md
+    description: Calculate cash runway and flag equity dilution risks from SEC filings
+
+  - name: insider_tracker
+    path: skills/insider_tracker/SKILL.md
+    description: Track high-signal insider trades (Form 4s) for cybersecurity companies
+
+  - name: sec_filings_parser
+    path: skills/sec_filings_parser/SKILL.md
+    description: Search SEC EDGAR for filings and extract cybersecurity sector catalyst disclosures
+
+  - name: certification_tracker
+    path: skills/certification_tracker/SKILL.md
+    description: Track compliance and certification milestones for covered vendors
+
+  - name: contract_pipeline
+    path: skills/contract_pipeline/SKILL.md
+    description: Track public sector contract pipeline signals for cybersecurity vendors
+
+  - name: data_quality
+    path: skills/data_quality/SKILL.md
+    description: Audit stale records, validate sources, track aliases, ensure data integrity
+
+  - name: evaluation_monitor
+    path: skills/evaluation_monitor/SKILL.md
+    description: Track product evaluations, bake-offs, and public scoring signals
+
+  - name: product_scoring
+    path: skills/product_scoring/SKILL.md
+    description: Score security products on market, technical, regulatory, and financial dimensions (0-10 each)
+
+# ---------------------------------------------------------------------------
+# Workflows -- automated research cadences
+# ---------------------------------------------------------------------------
+workflows:
+  - name: daily_update
+    path: workflows/daily_update.md
+    schedule: "0 7 * * 1-5"  # 7 AM ET, weekdays
+    description: Refresh KEV records, write findings artifacts, and rebuild the patch calendar

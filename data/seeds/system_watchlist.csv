@@ -1,0 +1,41 @@
+company_name,ticker,system_name,domain,system_type,primary_customer,current_status,notes
+Rocket Lab USA,RKLB,Electron,space,launch_vehicle,USSF,production,Operational small-lift rocket with high launch cadence
+Rocket Lab USA,RKLB,Neutron,space,launch_vehicle,commercial,development,Medium-lift reusable rocket in development
+Rocket Lab USA,RKLB,Photon,space,satellite_bus,NASA,production,Configurable spacecraft bus for LEO and deep space
+Intuitive Machines,LUNR,Nova-C,space,lander,NASA,production,CLPS lunar lander; IM-1 landed Feb 2024
+Intuitive Machines,LUNR,PACE,space,navigation,NASA,development,Lunar data relay and positioning network
+AeroVironment,AVAV,RQ-20 Puma,air,uas,DoD,fielded,Man-portable ISR UAS used by Army and SOF
+AeroVironment,AVAV,Switchblade 300,air,loitering_munition,DoD,fielded,Backpackable anti-personnel loitering munition
+AeroVironment,AVAV,Switchblade 600,air,loitering_munition,DoD,fielded,Anti-armor variant of Switchblade loitering munition
+Kratos Defense & Security Solutions,KTOS,BQM-167A,air,aerial_target,USAF,fielded,Subscale aerial target for air-to-air training
+Kratos Defense & Security Solutions,KTOS,UTAP-22 Mako,air,ucav,USAF,testing,Autonomous loyal wingman demonstrator
+Kratos Defense & Security Solutions,KTOS,Erinyes,air,hypersonic_target,DoD,testing,High-speed aerial target for hypersonic defense testing
+Planet Labs PBC,PL,Dove,space,satellite,DoD,production,3U CubeSat earth observation constellation
+Planet Labs PBC,PL,SkySat,space,satellite,DoD,production,High-resolution sub-meter imaging satellite
+Planet Labs PBC,PL,Pelican,space,satellite,DoD,development,Next-gen high-resolution constellation
+Spire Global,SPIR,LEMUR-2,space,satellite,DoD,production,Multi-purpose 3U LEO satellite for weather and maritime tracking
+BlackSky Technology,BKSY,Gen-2 Satellite,space,satellite,DoD,production,High-revisit 1m-resolution EO/IR imaging satellite
+BlackSky Technology,BKSY,Spectra AI,cyber,analytics_platform,DoD,production,AI-powered geospatial intelligence platform
+Redwire Corporation,RDW,iROSA,space,solar_array,NASA,fielded,Roll-out solar array upgrade for ISS
+Redwire Corporation,RDW,Regolith Print,space,manufacturing,NASA,development,In-space additive manufacturing using lunar regolith
+AST SpaceMobile,ASTS,BlueBird,space,satellite,commercial,testing,Direct-to-standard-handset broadband satellite
+Mercury Systems,MRCY,OpenVPX Modules,cyber,processing,DoD,production,Rugged mission computing for airborne EW/radar
+Mercury Systems,MRCY,SLIM,cyber,processing,DoD,production,Secure/lightweight processing for SWaP-constrained platforms
+Moog Inc,MOG.A,Flight Control Actuators,air,actuator,DoD,production,Electrohydrostatic actuators for fighter and transport aircraft
+Moog Inc,MOG.A,Satellite Propulsion,space,propulsion,NASA,production,Monopropellant and bipropellant thrusters for spacecraft
+Ducommun,DCO,Composite Structures,air,structure,DoD,production,Fuselage skins and control surfaces for military aircraft
+Viasat,VSAT,ViaSat-3,space,satellite,commercial,production,High-capacity Ka-band GEO broadband satellite
+Viasat,VSAT,Link-16 Terminal,cyber,datalink,DoD,fielded,Tactical data link terminal for joint forces
+Viasat,VSAT,EW Systems,cyber,electronic_warfare,DoD,production,Airborne and ground-based electronic warfare suites
+Momentus,MNTS,Vigoride,space,space_tug,NASA,testing,Orbital transfer vehicle for last-mile satellite delivery
+Mynaric AG,MYNA,CONDOR Mk3,space,laser_comms,DoD,production,Space-to-ground optical communication terminal
+Mynaric AG,MYNA,HAWK Air,air,laser_comms,DoD,testing,Air-to-ground high-bandwidth laser communication terminal
+Joby Aviation,JOBY,S4,air,evtol,DoD,testing,5-seat eVTOL aircraft pursuing FAA type certification
+Archer Aviation,ACHR,Midnight,air,evtol,DoD,testing,2000 lb payload eVTOL in FAA certification process
+BWX Technologies,BWXT,Nuclear Thermal Propulsion,space,propulsion,NASA,development,NTP engine for crewed deep space missions with DARPA/NASA
+BWX Technologies,BWXT,mPower Microreactor,land,reactor,DoD,development,Portable fission microreactor for forward operating bases
+CPI Aerostructures,CVU,A-10 Wing Panels,air,structure,USAF,production,Wing panel assembly for A-10 Thunderbolt II sustainment
+Satellogic,SATL,NewSat,space,satellite,DoD,production,70cm multispectral and hyperspectral imaging satellite
+Curtiss-Wright,CW,Flight Data Recorder,air,avionics,DoD,production,Crash-survivable flight data and cockpit voice recorders
+Curtiss-Wright,CW,Naval Electronics,sea,electronics,USN,production,Power distribution and control systems for surface combatants
+Kaman Corporation,KMAN,K-MAX,air,unmanned_helicopter,DoD,fielded,Optionally piloted unmanned helicopter for cargo resupply

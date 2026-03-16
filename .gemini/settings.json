@@ -1,0 +1,4 @@
+{
+  "project_context": "Python monorepo with 3 sector agents (biotech, gaming, aerospace). Universal CLI: python -m super_agents [list|run|search]",
+  "sandbox": false
+}

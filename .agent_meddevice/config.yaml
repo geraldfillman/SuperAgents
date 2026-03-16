@@ -1,0 +1,119 @@
+# =============================================================================
+# Medical Device & Diagnostics Agent -- Master Configuration
+# =============================================================================
+# Registers all skills, workflows, and schema for the
+# Medical Device / Diagnostics Product Tracker agent.
+
+agent:
+  name: medical-device-tracker
+  version: "0.1.0"
+  description: >
+    Asset-first tracking system for medical devices and diagnostics.
+    Primary unit of analysis is the medical device or diagnostic test
+    (510(k), PMA, De Novo, SaMD). Covers regulatory clearances,
+    reimbursement events, adverse event monitoring, and financial health.
+
+# ---------------------------------------------------------------------------
+# Skills -- specialized capabilities the agent can invoke
+# ---------------------------------------------------------------------------
+skills:
+  - name: fda_device_tracker
+    path: skills/fda_device_tracker/scripts/
+    description: >
+      Fetch FDA device regulatory events: 510(k) clearances, PMA approvals,
+      and De Novo classification decisions via openFDA APIs.
+    scripts:
+      - fetch_510k_clearances.py
+      - fetch_pma_approvals.py
+      - fetch_de_novo.py
+
+  - name: reimbursement_tracker
+    path: skills/reimbursement_tracker/scripts/
+    description: >
+      Track CPT/HCPCS code assignments and CMS coverage determinations
+      from SEC filings and the Federal Register.
+    scripts:
+      - fetch_cpt_codes.py
+
+  - name: adverse_event_monitor
+    path: skills/adverse_event_monitor/scripts/
+    description: >
+      Monitor FDA MAUDE database for device adverse event reports
+      via the openFDA device event endpoint.
+    scripts:
+      - fetch_maude_reports.py
+
+  - name: financial_monitor
+    path: skills/financial_monitor/scripts/
+    description: >
+      Calculate cash runway and flag equity dilution risks from SEC filings
+      for medical device companies.
+    scripts:
+      - fetch_financials.py
+
+  - name: insider_tracker
+    path: skills/insider_tracker/scripts/
+    description: >
+      Track high-signal insider trades (Form 4s) for medical device companies
+      leading up to regulatory decisions.
+    scripts:
+      - monitor_form4.py
+
+  - name: sec_filings_parser
+    path: skills/sec_filings_parser/scripts/
+    description: >
+      Search SEC EDGAR for medical device company filings and extract
+      device-specific regulatory catalyst disclosures.
+    scripts:
+      - search_edgar.py
+      - extract_device_catalysts.py
+
+  - name: data_quality
+    path: skills/data_quality/scripts/
+    description: >
+      Audit stale records, validate source integrity, and ensure data quality
+      across all medical device tracker tables.
+    scripts:
+      - audit_stale_records.py
+      - validate_sources.py
+
+  - name: device_scoring
+    path: skills/device_scoring/scripts/
+    description: >
+      Score devices on regulatory, reimbursement, safety, and financial
+      dimensions (0-10 each) with an overall composite score.
+    scripts:
+      - score_device.py
+
+  - name: calendar
+    path: skills/calendar/scripts/
+    description: >
+      Build rolling calendar of MDUFMA decision dates, FDA panel meetings,
+      and CMS coverage review deadlines.
+    scripts:
+      - build_calendar.py
+
+# ---------------------------------------------------------------------------
+# Workflows -- automated research cadences
+# ---------------------------------------------------------------------------
+workflows:
+  - name: daily_update
+    path: workflows/daily_update.md
+    schedule: "0 7 * * 1-5"   # 7 AM ET, weekdays
+    description: >
+      Pull FDA device clearances/approvals, check 8-Ks for device catalysts,
+      refresh MAUDE adverse events, update device calendar.
+
+  - name: weekly_review
+    path: workflows/weekly_review.md
+    schedule: "0 9 * * 1"     # Monday 9 AM ET
+    description: >
+      Add new device companies, 90-day catalyst review, re-score devices,
+      audit stale records, validate source integrity.
+
+  - name: monthly_reconciliation
+    path: workflows/monthly_reconciliation.md
+    schedule: "0 9 1 * *"     # 1st of month, 9 AM ET
+    description: >
+      Reconcile SEC filings, archive discontinued devices, rebuild segment
+      coverage, summarize regulatory outcomes.

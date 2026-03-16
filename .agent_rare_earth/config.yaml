@@ -1,0 +1,75 @@
+# =============================================================================
+# Rare Earth & Critical Minerals Agent -- Master Configuration
+# =============================================================================
+# Registers all skills, workflows for the
+# Rare Earth, Critical Minerals, and Mining Project Tracker agent.
+
+agent:
+  name: rare-earth-minerals-tracker
+  version: "0.1.0"
+  description: >
+    Asset-first tracking for rare earth, critical minerals, and mining
+    projects. Primary unit of analysis is the mineral deposit / mine site.
+
+# ---------------------------------------------------------------------------
+# Skills -- specialized capabilities the agent can invoke
+# ---------------------------------------------------------------------------
+skills:
+  - name: permit_tracker
+    path: skills/permit_tracker
+    description: Query Federal Register for BLM/NEPA/EPA mining permit documents
+
+  - name: resource_estimate_parser
+    path: skills/resource_estimate_parser
+    description: Search SEC EDGAR for NI 43-101 and S-K 1300 technical reports
+
+  - name: offtake_tracker
+    path: skills/offtake_tracker
+    description: Search SEC EDGAR 8-K filings for offtake agreement announcements
+
+  - name: dpa_award_tracker
+    path: skills/dpa_award_tracker
+    description: Query USAspending.gov for DPA Title III critical minerals awards
+
+  - name: financial_monitor
+    path: skills/financial_monitor
+    description: Calculate cash runway from SEC EDGAR filings for mining companies
+
+  - name: insider_tracker
+    path: skills/insider_tracker
+    description: Track high-signal insider trades (Form 4s) for mining companies
+
+  - name: sec_filings_parser
+    path: skills/sec_filings_parser
+    description: Search SEC EDGAR for filings and extract mining-specific catalysts
+
+  - name: data_quality
+    path: skills/data_quality
+    description: Audit stale records, validate sources, ensure data integrity
+
+  - name: mineral_scoring
+    path: skills/mineral_scoring
+    description: Score mining projects on resource, permitting, offtake, and financial dimensions
+
+  - name: calendar
+    path: skills/calendar
+    description: Build forward-looking calendar of permit milestones, earnings, and production targets
+
+# ---------------------------------------------------------------------------
+# Workflows -- automated research cadences
+# ---------------------------------------------------------------------------
+workflows:
+  - name: daily_update
+    path: workflows/daily_update.md
+    schedule: "0 7 * * 1-5"  # 7 AM ET, weekdays
+    description: Check Federal Register, check 8-Ks, refresh permits
+
+  - name: weekly_review
+    path: workflows/weekly_review.md
+    schedule: "0 9 * * 1"    # Monday 9 AM ET
+    description: Re-score projects, audit stale data, update calendar
+
+  - name: monthly_reconciliation
+    path: workflows/monthly_reconciliation.md
+    schedule: "0 9 1 * *"    # 1st of month, 9 AM ET
+    description: Full SEC filing sweep, reconcile resource estimates

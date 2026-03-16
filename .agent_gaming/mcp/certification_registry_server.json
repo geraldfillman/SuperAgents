@@ -1,0 +1,13 @@
+{
+  "name": "certification_registry",
+  "transport": "https",
+  "sources": [
+    "ESRB search",
+    "regional rating-board registries",
+    "platform certification status inputs"
+  ],
+  "notes": [
+    "This is a placeholder connector definition for launch-readiness signals.",
+    "Prefer official registry pages or exported snapshots over third-party reposts."
+  ]
+}

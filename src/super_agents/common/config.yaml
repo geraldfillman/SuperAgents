@@ -1,0 +1,22 @@
+# =============================================================================
+# Super_Agents Common Skills Registry
+# =============================================================================
+# Skills listed here are available to EVERY sector agent and provide a
+# canonical description used as a fallback when an agent's own config.yaml
+# omits the entry.  Do NOT list sector-specific skills here.
+
+common_skills:
+  - name: financial_monitor
+    description: Calculate cash runway and flag equity dilution risks from SEC filings
+
+  - name: insider_tracker
+    description: Track high-signal insider trades (Form 4s) across any sector watchlist
+
+  - name: sec_filings_parser
+    description: Search SEC EDGAR for filings and extract sector catalyst disclosures
+
+  - name: data_quality
+    description: Audit stale records, validate sources, track aliases, ensure data integrity
+
+  - name: calendar
+    description: Build rolling catalyst/event calendar from live regulatory and financial sources

@@ -1,0 +1,76 @@
+# =============================================================================
+# Fintech Agent -- Master Configuration
+# =============================================================================
+# Registers all skills, workflows for the
+# Fintech & Digital Payments Product Tracker agent.
+
+agent:
+  name: fintech-payments-tracker
+  version: "0.1.0"
+  description: >
+    Asset-first tracking system for publicly traded fintech and digital
+    payment companies. Primary unit of analysis is the financial product
+    (payment rail, lending product, neobank feature), not the company.
+
+# ---------------------------------------------------------------------------
+# Skills -- specialized capabilities the agent can invoke
+# ---------------------------------------------------------------------------
+skills:
+  - name: license_tracker
+    path: skills/license_tracker
+    description: Track money transmitter licenses, banking charters, broker-dealer registrations, and crypto licenses via NMLS and OCC
+
+  - name: adoption_monitor
+    path: skills/adoption_monitor
+    description: Monitor product adoption metrics (active users, TPV, revenue run rate, merchant count) from SEC filings
+
+  - name: partnership_tracker
+    path: skills/partnership_tracker
+    description: Track partnership and collaboration announcements from 8-K filings and press releases
+
+  - name: enforcement_monitor
+    path: skills/enforcement_monitor
+    description: Monitor enforcement actions from CFPB, OCC, SEC, FinCEN, and state attorneys general
+
+  - name: financial_monitor
+    path: skills/financial_monitor
+    description: Calculate cash runway and flag equity dilution risks from SEC filings
+
+  - name: insider_tracker
+    path: skills/insider_tracker
+    description: Track high-signal insider trades (Form 4s) for fintech companies
+
+  - name: sec_filings_parser
+    path: skills/sec_filings_parser
+    description: Search SEC EDGAR for filings and extract fintech-specific catalyst disclosures
+
+  - name: data_quality
+    path: skills/data_quality
+    description: Audit stale records, validate sources, ensure data integrity across all fintech tables
+
+  - name: product_scoring
+    path: skills/product_scoring
+    description: Score fintech products on adoption, licensing, competitive, and financial dimensions (0-10 each)
+
+  - name: calendar
+    path: skills/calendar
+    description: Build and refresh rolling calendar of license deadlines, earnings dates, and product launches
+
+# ---------------------------------------------------------------------------
+# Workflows -- automated research cadences
+# ---------------------------------------------------------------------------
+workflows:
+  - name: daily_update
+    path: workflows/daily_update.md
+    schedule: "0 7 * * 1-5"  # 7 AM ET, weekdays
+    description: Pull licensing updates, check 8-Ks for partnerships, monitor enforcement actions, refresh calendar
+
+  - name: weekly_review
+    path: workflows/weekly_review.md
+    schedule: "0 9 * * 1"    # Monday 9 AM ET
+    description: Screen new fintech names, review 90-day calendar, re-score products, audit stale records
+
+  - name: monthly_reconciliation
+    path: workflows/monthly_reconciliation.md
+    schedule: "0 9 1 * *"    # 1st of month, 9 AM ET
+    description: Reconcile SEC filings, archive discontinued products, rebuild segment coverage, deep quality audit

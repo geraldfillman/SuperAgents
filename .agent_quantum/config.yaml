@@ -1,0 +1,89 @@
+# =============================================================================
+# Quantum Computing Agent -- Master Configuration
+# =============================================================================
+# Registers all skills, workflows for the
+# Quantum Computing Company / System Tracker agent.
+
+agent:
+  name: quantum-computing-tracker
+  version: "0.1.0"
+  description: >
+    Asset-first tracking system for publicly traded and privately funded
+    quantum computing companies. Primary unit of analysis is the quantum
+    system (processor, error correction module, software stack), not the
+    company.
+
+# ---------------------------------------------------------------------------
+# Skills -- specialized capabilities the agent can invoke
+# ---------------------------------------------------------------------------
+skills:
+  - name: benchmark_tracker
+    path: skills/benchmark_tracker/scripts/fetch_benchmarks.py
+    description: Fetch quantum benchmark announcements from SEC EDGAR and arXiv (quantum volume, CLOPS, EPLG)
+
+  - name: publication_monitor
+    path: skills/publication_monitor/scripts/fetch_publications.py
+    description: Query arXiv for recent quantum computing papers by company-affiliated authors
+
+  - name: patent_monitor
+    path: skills/patent_monitor/scripts/fetch_patents.py
+    description: Query USPTO PatentsView API for quantum computing patent filings and grants
+
+  - name: roadmap_tracker
+    path: skills/roadmap_tracker/scripts/fetch_roadmap_signals.py
+    description: Search SEC EDGAR for 10-K/8-K filings with quantum roadmap language (qubit targets, error correction milestones)
+
+  - name: sbir_tracker
+    path: skills/sbir_tracker/scripts/fetch_sbir_awards.py
+    description: Query USAspending.gov API for SBIR/STTR awards related to quantum computing
+
+  - name: financial_monitor
+    path: skills/financial_monitor/scripts/fetch_financials.py
+    description: Calculate cash runway and flag equity dilution risks from SEC filings
+
+  - name: insider_tracker
+    path: skills/insider_tracker/scripts/monitor_form4.py
+    description: Track high-signal insider trades (Form 4s) leading up to milestone announcements
+
+  - name: sec_filings_parser
+    path: skills/sec_filings_parser/scripts/search_edgar.py
+    description: Search SEC EDGAR for company filings by CIK, ticker, or filing type
+
+  - name: sec_catalyst_extractor
+    path: skills/sec_filings_parser/scripts/extract_quantum_catalysts.py
+    description: Parse cached filings for quantum-specific catalysts (benchmark records, new system announcements, contract wins)
+
+  - name: data_quality
+    path: skills/data_quality/scripts/audit_stale_records.py
+    description: Audit stale records, validate sources, ensure data integrity across quantum tables
+
+  - name: source_validator
+    path: skills/data_quality/scripts/validate_sources.py
+    description: Check all records for source integrity issues (missing URLs, unverified claims)
+
+  - name: system_scoring
+    path: skills/system_scoring/scripts/score_system.py
+    description: Score quantum systems on qubit count, error rate, ecosystem maturity, and funding (0-10 each)
+
+  - name: calendar
+    path: skills/calendar/scripts/build_calendar.py
+    description: Build rolling calendar of roadmap milestones, earnings, conference demos
+
+# ---------------------------------------------------------------------------
+# Workflows -- automated research cadences
+# ---------------------------------------------------------------------------
+workflows:
+  - name: daily_update
+    path: workflows/daily_update.md
+    schedule: "0 7 * * 1-5"   # 7 AM ET, weekdays
+    description: Pull benchmark updates, check 8-Ks, refresh arXiv publications, update milestone calendar
+
+  - name: weekly_review
+    path: workflows/weekly_review.md
+    schedule: "0 9 * * 1"     # Monday 9 AM ET
+    description: Add new systems, 90-day milestone review, re-score systems, audit stale records
+
+  - name: monthly_reconciliation
+    path: workflows/monthly_reconciliation.md
+    schedule: "0 9 1 * *"     # 1st of month, 9 AM ET
+    description: Reconcile SEC filings, archive deprecated systems, rebuild approach coverage

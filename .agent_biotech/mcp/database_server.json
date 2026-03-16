@@ -1,0 +1,9 @@
+{
+  "name": "database",
+  "transport": "local",
+  "database_engines": [
+    "sqlite",
+    "postgresql"
+  ],
+  "schema_file": "schema/create_biotech_tables.sql"
+}

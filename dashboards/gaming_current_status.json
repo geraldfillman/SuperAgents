@@ -1,0 +1,21 @@
+{
+  "agent_name": "gaming",
+  "run_id": "20260315_120100",
+  "workflow_name": "daily_update",
+  "task_name": "fetch_storefront_metrics",
+  "status": "running",
+  "started_at": "2026-03-15T13:28:49.355754",
+  "input_scope": [
+    "EA",
+    "TTWO",
+    "MSGM",
+    "CAPCOM"
+  ],
+  "active_source": "steam_storefront",
+  "progress": {
+    "completed": 2,
+    "total": 4
+  },
+  "current_focus": "Fetching Steam storefront snapshots",
+  "latest_message": "Processed 2/4 studios"
+}

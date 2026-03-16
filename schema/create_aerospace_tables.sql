@@ -1,0 +1,243 @@
+CREATE TABLE companies (
+    id INTEGER PRIMARY KEY,
+    ticker TEXT,
+    cik TEXT,
+    company_name TEXT NOT NULL,
+    exchange TEXT,
+    sector TEXT,
+    market_cap_bucket TEXT,
+    cage_code TEXT,
+    ueid TEXT,
+    headquarters_country TEXT,
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE systems (
+    id INTEGER PRIMARY KEY,
+    company_id INTEGER NOT NULL,
+    system_name TEXT NOT NULL,
+    domain TEXT NOT NULL,
+    system_type TEXT,
+    trl_level INTEGER,
+    status TEXT,
+    prime_or_subtier TEXT,
+    primary_customer TEXT,
+    source_type TEXT,
+    source_confidence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id)
+);
+
+CREATE TABLE contract_awards (
+    id INTEGER PRIMARY KEY,
+    company_id INTEGER NOT NULL,
+    system_id INTEGER,
+    award_number TEXT,
+    agency TEXT NOT NULL,
+    office_name TEXT,
+    vehicle_type TEXT,
+    award_type TEXT,
+    contract_status TEXT,
+    ceiling_value_usd NUMERIC,
+    obligated_value_usd NUMERIC,
+    award_date DATE,
+    start_date DATE,
+    end_date DATE,
+    period_of_performance_text TEXT,
+    description TEXT,
+    source_url TEXT,
+    source_type TEXT,
+    source_confidence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id),
+    FOREIGN KEY (system_id) REFERENCES systems(id)
+);
+
+CREATE TABLE sbir_awards (
+    id INTEGER PRIMARY KEY,
+    company_id INTEGER NOT NULL,
+    system_id INTEGER,
+    agency TEXT,
+    branch TEXT,
+    program TEXT,
+    phase TEXT,
+    agency_tracking_number TEXT,
+    contract TEXT,
+    award_title TEXT,
+    topic_code TEXT,
+    award_year INTEGER,
+    award_amount_usd NUMERIC,
+    proposal_award_date DATE,
+    contract_end_date DATE,
+    source_url TEXT,
+    source_type TEXT,
+    source_confidence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id),
+    FOREIGN KEY (system_id) REFERENCES systems(id)
+);
+
+CREATE TABLE sam_pipeline_signals (
+    id INTEGER PRIMARY KEY,
+    company_id INTEGER NOT NULL,
+    system_id INTEGER,
+    notice_id TEXT,
+    solicitation_number TEXT,
+    title TEXT NOT NULL,
+    notice_type TEXT,
+    priority TEXT,
+    status TEXT,
+    posted_date DATE,
+    response_deadline DATE,
+    archive_date DATE,
+    agency TEXT,
+    office_name TEXT,
+    matched_keyword TEXT,
+    naics_code TEXT,
+    set_aside TEXT,
+    description TEXT,
+    source_url TEXT,
+    source_type TEXT,
+    source_confidence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id),
+    FOREIGN KEY (system_id) REFERENCES systems(id)
+);
+
+CREATE TABLE faa_signals (
+    id INTEGER PRIMARY KEY,
+    company_id INTEGER NOT NULL,
+    system_id INTEGER,
+    signal_type TEXT NOT NULL,
+    priority TEXT,
+    title TEXT NOT NULL,
+    status TEXT,
+    matched_keyword TEXT,
+    summary_snippet TEXT,
+    page_last_updated TEXT,
+    source_url TEXT,
+    source_type TEXT,
+    source_confidence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id),
+    FOREIGN KEY (system_id) REFERENCES systems(id)
+);
+
+CREATE TABLE program_milestones (
+    id INTEGER PRIMARY KEY,
+    company_id INTEGER NOT NULL,
+    system_id INTEGER,
+    milestone_type TEXT NOT NULL,
+    milestone_name TEXT,
+    expected_date DATE,
+    window_start DATE,
+    window_end DATE,
+    status TEXT,
+    evidence_summary TEXT,
+    confidence_score NUMERIC,
+    source_url TEXT,
+    source_type TEXT,
+    source_confidence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id),
+    FOREIGN KEY (system_id) REFERENCES systems(id)
+);
+
+CREATE TABLE test_events (
+    id INTEGER PRIMARY KEY,
+    system_id INTEGER NOT NULL,
+    event_name TEXT NOT NULL,
+    event_type TEXT,
+    event_date DATE,
+    location_name TEXT,
+    outcome TEXT,
+    notes TEXT,
+    source_url TEXT,
+    source_type TEXT,
+    source_confidence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (system_id) REFERENCES systems(id)
+);
+
+CREATE TABLE budget_lines (
+    id INTEGER PRIMARY KEY,
+    agency TEXT NOT NULL,
+    fiscal_year INTEGER NOT NULL,
+    appropriation TEXT,
+    program_element TEXT,
+    line_item TEXT,
+    amount_usd NUMERIC,
+    status TEXT,
+    source_url TEXT,
+    source_type TEXT,
+    source_confidence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE budget_exposure_matches (
+    id INTEGER PRIMARY KEY,
+    company_id INTEGER NOT NULL,
+    system_id INTEGER,
+    agency TEXT NOT NULL,
+    fiscal_year INTEGER NOT NULL,
+    appropriation TEXT,
+    program_element TEXT,
+    line_item TEXT,
+    amount_usd NUMERIC,
+    match_type TEXT,
+    match_confidence TEXT,
+    match_score NUMERIC,
+    evidence TEXT,
+    source_url TEXT,
+    source_type TEXT,
+    source_confidence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id),
+    FOREIGN KEY (system_id) REFERENCES systems(id)
+);
+
+CREATE TABLE financials (
+    id INTEGER PRIMARY KEY,
+    company_id INTEGER NOT NULL,
+    report_date DATE NOT NULL,
+    form_type TEXT,
+    total_cash_millions NUMERIC,
+    quarterly_burn_millions NUMERIC,
+    est_runway_months NUMERIC,
+    going_concern_flag BOOLEAN,
+    source_url TEXT,
+    source_type TEXT,
+    source_confidence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id)
+);
+
+CREATE TABLE insider_trades (
+    id INTEGER PRIMARY KEY,
+    company_id INTEGER NOT NULL,
+    insider_name TEXT NOT NULL,
+    insider_role TEXT,
+    transaction_date DATE NOT NULL,
+    transaction_code TEXT,
+    shares NUMERIC,
+    price_per_share NUMERIC,
+    value_usd NUMERIC,
+    source_url TEXT,
+    source_type TEXT,
+    source_confidence TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (company_id) REFERENCES companies(id)
+);

@@ -1,0 +1,27 @@
+name: rss_monitor
+description: Monitor FDA weekly approval RSS feeds and published pages for new entries
+version: "1.0.0"
+
+triggers:
+  - type: schedule
+    cron: "0 8 * * 1-5"  # Weekdays 8 AM
+
+feeds:
+  - name: fda_drug_approvals
+    url: "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds"
+    category: drug_approvals
+    
+  - name: fda_medical_devices
+    url: "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds"
+    category: device_clearances
+    
+  - name: fda_safety_alerts
+    url: "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds"
+    category: safety_alerts
+
+actions:
+  on_new_entry:
+    - store_raw_data
+    - check_against_tracked_products
+    - update_regulatory_events
+    - trigger_notification_if_matched

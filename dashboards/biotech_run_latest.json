@@ -1,0 +1,41 @@
+{
+  "agent_name": "biotech",
+  "run_id": "20260315_070000",
+  "workflow_name": "daily_update",
+  "task_name": "fetch_drug_approvals",
+  "status": "completed",
+  "started_at": "2026-03-15T07:00:00",
+  "completed_at": "2026-03-15T07:00:42",
+  "duration_seconds": 42.0,
+  "inputs": {
+    "companies": 5,
+    "products": 12
+  },
+  "outputs": {
+    "records_written": 8,
+    "files_written": 3
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "asset": "Barzolvolimab",
+      "finding_type": "pdufa_date_detected",
+      "summary": "PDUFA date April 28, 2026 confirmed in 8-K filing",
+      "source_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000744218",
+      "confidence": "secondary"
+    },
+    {
+      "severity": "info",
+      "asset": "Libervant",
+      "finding_type": "approval_granted",
+      "summary": "FDA approval for Libervant (diazepam) nasal spray confirmed",
+      "source_url": "https://api.fda.gov/drug/drugsfda.json",
+      "confidence": "primary"
+    }
+  ],
+  "blockers": [],
+  "next_actions": [
+    "Rebuild catalyst calendar",
+    "Update product scores"
+  ]
+}

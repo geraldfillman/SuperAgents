@@ -1,0 +1,81 @@
+agent:
+  name: gaming-studio-tracker
+  version: "0.1.0"
+  description: >
+    Asset-first research tracker for publicly traded game studios where the
+    primary unit of analysis is the title rather than the company narrative.
+
+skills:
+  - name: financial_monitor
+    path: skills/financial_monitor/SKILL.md
+    description: Calculate cash runway, milestone dependence, and dilution risk from SEC filings
+
+  - name: sec_filings_parser
+    path: skills/sec_filings_parser/SKILL.md
+    description: Search EDGAR filings for delays, publisher milestones, launch timing, and financing signals
+
+  - name: certification_tracker
+    path: skills/certification_tracker/SKILL.md
+    description: Track ESRB and platform certification signals that indicate launch readiness
+
+  - name: storefront_monitor
+    path: skills/storefront_monitor/SKILL.md
+    description: Collect public storefront metadata and momentum proxies for tracked titles
+
+  - name: engagement_monitor
+    path: skills/engagement_monitor/SKILL.md
+    description: Track launch quality and post-launch engagement for released titles
+
+  - name: release_calendar
+    path: skills/release_calendar/SKILL.md
+    description: Build and refresh the rolling launch and certification calendar
+
+  - name: title_scoring
+    path: skills/title_scoring/SKILL.md
+    description: Score titles on launch readiness, funding resilience, and post-launch upside
+
+  - name: data_quality
+    path: skills/data_quality/SKILL.md
+    description: Audit stale records, validate sources, and preserve title aliases and release-history changes
+
+  - name: studio_screener
+    path: skills/studio_screener/SKILL.md
+    description: Discover publicly traded console and PC studios that fit the target coverage universe
+
+mcp_servers:
+  - name: sec_edgar
+    config: mcp/sec_edgar_server.json
+    description: SEC EDGAR filing search and filing retrieval
+
+  - name: certification_registry
+    config: mcp/certification_registry_server.json
+    description: Rating-board and platform certification sources
+
+  - name: storefront
+    config: mcp/storefront_server.json
+    description: Public storefront metadata and engagement connectors
+
+  - name: database
+    config: mcp/database_server.json
+    description: Local SQLite or PostgreSQL database for gaming tracker tables
+
+workflows:
+  - name: daily_update
+    path: workflows/daily_update.md
+    schedule: "0 7 * * 1-5"
+    description: Pull certification signals, check new SEC filings, refresh storefront snapshots, and rebuild the release calendar
+
+  - name: weekly_review
+    path: workflows/weekly_review.md
+    schedule: "0 9 * * 1"
+    description: Review runway, launch calendar, title scoring, and stale records
+
+  - name: monthly_reconciliation
+    path: workflows/monthly_reconciliation.md
+    schedule: "0 9 1 * *"
+    description: Reconcile delayed, launched, and canceled titles and refresh studio coverage
+
+plugins:
+  - name: notification_hooks
+    path: plugins/notification_hooks/plugin.yaml
+    description: Send Slack or email alerts when release-critical signals change

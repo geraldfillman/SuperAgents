@@ -1,0 +1,4 @@
+company_name,ticker,cik,primary_focus,priority,notes
+CrowdStrike,CRWD,1535527,endpoint security,high,Representative public vendor.
+Palo Alto Networks,PANW,1327567,network security,high,Representative public vendor.
+Zscaler,ZS,1713683,zero trust,medium,Representative public vendor.

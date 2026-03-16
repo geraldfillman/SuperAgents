@@ -1,0 +1,112 @@
+# =============================================================================
+# Biotech Agent — Master Configuration
+# =============================================================================
+# Registers all skills, MCP servers, workflows, and plugins for the
+# Micro Biotech / Pharma / Healthcare Product Tracker agent.
+
+agent:
+  name: biotech-product-tracker
+  version: "0.1.0"
+  description: >
+    Research-first tracking system for publicly traded micro/small-cap
+    biotech, pharma, and healthcare companies. Primary unit of analysis
+    is the product, not the company.
+
+# ---------------------------------------------------------------------------
+# Skills — specialized capabilities the agent can invoke
+# ---------------------------------------------------------------------------
+skills:
+  - name: fda_tracker
+    path: skills/fda_tracker/SKILL.md
+    description: Fetch FDA drug approvals, device clearances, advisory meetings, and postmarketing requirements
+
+  - name: clinicaltrials_scraper
+    path: skills/clinicaltrials_scraper/SKILL.md
+    description: Query ClinicalTrials.gov v2 API for trial data and detect changes
+
+  - name: sec_filings_parser
+    path: skills/sec_filings_parser/SKILL.md
+    description: Search SEC EDGAR for filings and extract regulatory catalyst disclosures
+
+  - name: product_scoring
+    path: skills/product_scoring/SKILL.md
+    description: Score products on 10 evidence/regulatory dimensions and compute derived flags
+
+  - name: catalyst_calendar
+    path: skills/catalyst_calendar/SKILL.md
+    description: Build and refresh the 90-day rolling catalyst calendar
+
+  - name: data_quality
+    path: skills/data_quality/SKILL.md
+    description: Audit stale records, validate sources, track aliases, ensure data integrity
+
+  - name: company_screener
+    path: skills/company_screener/SKILL.md
+    description: Screen and discover new micro/small-cap biotech/pharma/medtech companies
+
+  - name: financial_monitor
+    path: skills/financial_monitor/SKILL.md
+    description: Calculate cash runway and flag equity dilution risks from SEC filings
+
+  - name: insider_tracker
+    path: skills/insider_tracker/SKILL.md
+    description: Track high-signal insider trades (Form 4s) leading up to data readouts
+
+  - name: conference_scraper
+    path: skills/conference_scraper/SKILL.md
+    description: Scrapes major medical conference databases to catch abstract titles and data presentations
+
+  - name: orange_book_watcher
+    path: skills/orange_book_watcher/SKILL.md
+    description: Track patent exclusivity cliffs and generic defense per product using the FDA Orange Book
+
+# ---------------------------------------------------------------------------
+# MCP Servers — external data connectors
+# ---------------------------------------------------------------------------
+mcp_servers:
+  - name: fda
+    config: mcp/fda_server.json
+    description: FDA APIs (openFDA, Drugs@FDA, device databases)
+
+  - name: clinicaltrials
+    config: mcp/clinicaltrials_server.json
+    description: ClinicalTrials.gov v2 API
+
+  - name: sec_edgar
+    config: mcp/sec_edgar_server.json
+    description: SEC EDGAR full-text search and filing retrieval
+
+  - name: database
+    config: mcp/database_server.json
+    description: Local PostgreSQL/SQLite database for all tracker tables
+
+# ---------------------------------------------------------------------------
+# Workflows — automated research cadences
+# ---------------------------------------------------------------------------
+workflows:
+  - name: daily_update
+    path: workflows/daily_update.md
+    schedule: "0 7 * * 1-5"  # 7 AM ET, weekdays
+    description: Pull FDA updates, check 8-Ks, refresh ClinicalTrials.gov, update catalyst calendar
+
+  - name: weekly_review
+    path: workflows/weekly_review.md
+    schedule: "0 9 * * 1"    # Monday 9 AM ET
+    description: Add new names, 90-day catalyst review, re-rank products, audit stale records
+
+  - name: monthly_reconciliation
+    path: workflows/monthly_reconciliation.md
+    schedule: "0 9 1 * *"    # 1st of month, 9 AM ET
+    description: Reconcile SEC filings, archive discontinued, rebuild indication coverage
+
+# ---------------------------------------------------------------------------
+# Plugins — optional extensions
+# ---------------------------------------------------------------------------
+plugins:
+  - name: rss_monitor
+    path: plugins/rss_monitor/plugin.yaml
+    description: Monitor FDA weekly approval RSS feeds for new entries
+
+  - name: notification_hooks
+    path: plugins/notification_hooks/plugin.yaml
+    description: Send Slack/email alerts on catalyst triggers

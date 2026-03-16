@@ -1,0 +1,26 @@
+{
+  "agent_name": "renewable_energy",
+  "run_id": "20260315_130000",
+  "workflow_name": "calendar",
+  "task_name": "build_calendar",
+  "status": "completed",
+  "started_at": "2026-03-15T13:00:00",
+  "completed_at": "2026-03-15T13:00:30",
+  "duration_seconds": 30.0,
+  "inputs": {
+    "window_days": 180
+  },
+  "outputs": {
+    "records_written": 2
+  },
+  "findings": [
+    {
+      "severity": "info",
+      "summary": "cod for Example Solar on 2026-04-01"
+    }
+  ],
+  "blockers": [],
+  "next_actions": [
+    "Review upcoming events"
+  ]
+}

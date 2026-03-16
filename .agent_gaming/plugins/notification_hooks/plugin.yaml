@@ -1,0 +1,3 @@
+name: notification_hooks
+entrypoint: notify.py
+description: Emit alerts when titles are delayed, certified, launched, or financed

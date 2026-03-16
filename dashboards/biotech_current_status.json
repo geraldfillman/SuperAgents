@@ -1,0 +1,22 @@
+{
+  "agent_name": "biotech",
+  "run_id": "20260315_120000",
+  "workflow_name": "daily_update",
+  "task_name": "fetch_drug_approvals",
+  "status": "completed",
+  "started_at": "2026-03-15T13:28:49.355340",
+  "input_scope": [
+    "AQST",
+    "CLDX",
+    "SRRK",
+    "KPTI",
+    "PRTA"
+  ],
+  "active_source": "openFDA",
+  "progress": {
+    "completed": 5,
+    "total": 5
+  },
+  "current_focus": "Fetching FDA drug approval updates",
+  "latest_message": "Processed 5/5 companies"
+}

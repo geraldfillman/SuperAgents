@@ -1,0 +1,32 @@
+{
+  "agent_name": "gaming",
+  "run_id": "20260315_070100",
+  "workflow_name": "daily_update",
+  "task_name": "fetch_storefront_metrics",
+  "status": "completed",
+  "started_at": "2026-03-15T07:05:00",
+  "completed_at": "2026-03-15T07:05:31",
+  "duration_seconds": 31.0,
+  "inputs": {
+    "studios": 4,
+    "titles": 9
+  },
+  "outputs": {
+    "records_written": 9,
+    "files_written": 2
+  },
+  "findings": [
+    {
+      "severity": "info",
+      "asset": "PRAGMATA",
+      "finding_type": "release_date_detected",
+      "summary": "Steam page shows release date April 16, 2026",
+      "source_url": "https://store.steampowered.com/app/3357650",
+      "confidence": "primary"
+    }
+  ],
+  "blockers": [],
+  "next_actions": [
+    "Rebuild release calendar"
+  ]
+}

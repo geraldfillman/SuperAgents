@@ -1,0 +1,9 @@
+product_name,company_name,ticker,indication,modality,development_stage,notes
+Libervant,Aquestive Therapeutics,AQST,epilepsy rescue therapy,film formulation,approved,Grounded in current biotech run artifacts
+Barzolvolimab,Celldex Therapeutics,CLDX,mast cell disease / chronic urticaria,monoclonal antibody,regulatory,Grounded in current biotech run artifacts
+Apitegromab,Scholar Rock,SRRK,spinal muscular atrophy,monoclonal antibody,tracked,Starter biotech seed
+XPOVIO,Karyopharm Therapeutics,KPTI,hematology / oncology,small molecule,tracked,Starter biotech seed
+PRX-012,Prothena,PRTA,Alzheimer disease,monoclonal antibody,tracked,Starter biotech seed
+Paltusotine,Crinetics Pharmaceuticals,CRNX,endocrine disease,small molecule,tracked,Starter biotech seed
+Cretostimogene Grenadenorepvec,CG Oncology,CGON,bladder cancer,oncolytic immunotherapy,tracked,Starter biotech seed
+VK2735,Viking Therapeutics,VKTX,obesity / metabolic disease,peptide,tracked,Starter biotech seed

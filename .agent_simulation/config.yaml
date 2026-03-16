@@ -1,0 +1,15 @@
+# =============================================================================
+# Simulation Agent -- Master Configuration
+# =============================================================================
+
+agent:
+  name: simulation-runtime
+  version: "0.1.0"
+  description: >
+    Local simulation runtime wrapper for preparing and executing MiroFish OASIS
+    bundles without exposing the original Flask and Vue application surface.
+
+skills:
+  - name: mirofish_runtime
+    path: skills/mirofish_runtime
+    description: Build MiroFish-compatible bundles, launch local simulations, inspect status, and send runtime commands

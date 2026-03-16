@@ -1,0 +1,109 @@
+# Scenario: Strait of Hormuz Zero Transit
+# One of the most impactful geopolitical simulations — tests energy,
+# logistics, and financial agent responses to a major chokepoint closure.
+#
+# Run with:
+#   python -m super_agents simulate scenarios/hormuz_zero_transit.yaml
+
+scenario:
+  name: hormuz_zero_transit
+  description: >
+    Strait of Hormuz commercial shipping crossings fall to zero due to
+    military escalation. 21% of global oil supply is disrupted. Insurance
+    markets freeze, tanker rates spike, and alternative routes (Cape of
+    Good Hope, Suez backflow) absorb overflow traffic.
+
+  personas:
+    - name: energy_analyst
+      role: Senior energy market analyst
+      sector: renewable_energy
+      perspective: >
+        Track oil supply disruption magnitude, price impact on WTI/Brent,
+        strategic petroleum reserve activation likelihood, and OPEC+ response.
+      expertise:
+        - oil_markets
+        - supply_disruption
+        - price_modeling
+
+    - name: logistics_officer
+      role: Global shipping logistics coordinator
+      sector: rare_earth
+      perspective: >
+        Model route diversions via Cape of Good Hope, Suez backflow capacity,
+        container rate changes (TEU spot rates), and port congestion cascades.
+      expertise:
+        - maritime_routing
+        - container_rates
+        - port_operations
+
+    - name: bond_trader
+      role: Fixed income portfolio manager
+      sector: fintech
+      perspective: >
+        Watch yield curve behavior, flight-to-safety flows into US Treasuries,
+        central bank emergency signaling, and credit spread widening.
+      expertise:
+        - yield_curves
+        - central_bank_policy
+        - credit_markets
+
+    - name: defense_analyst
+      role: Military intelligence analyst
+      sector: aerospace
+      perspective: >
+        Assess coalition naval response timeline, carrier group positioning,
+        mine-clearing operations capacity, and escalation/de-escalation signals.
+      expertise:
+        - naval_operations
+        - military_logistics
+        - escalation_dynamics
+
+  variables:
+    oil_price_wti: 95.0
+    oil_price_brent: 98.0
+    strait_status: closed
+    daily_oil_disrupted_mbd: 21.0
+    cape_route_utilization_pct: 40
+    suez_backflow_pct: 15
+    teu_spot_rate_eu_asia: 2800
+    us_10y_yield: 4.25
+    vix: 22
+    coalition_response: pending
+    spr_release_active: false
+    insurance_market_status: frozen
+    days_since_closure: 0
+
+  duration: 14d
+  tick: 1d
+
+  data_feeds:
+    - crucix.maritime
+    - crucix.energy
+    - crucix.geopolitical
+
+  hypotheses:
+    - question: When does Cape of Good Hope become the dominant global route?
+      metric: cape_route_utilization_pct
+      unit: percent
+    - question: What is the peak TEU spot rate for EU-Asia container shipping?
+      metric: teu_spot_rate_eu_asia
+      unit: usd_per_teu
+    - question: How high does WTI go before SPR release stabilizes prices?
+      metric: oil_price_wti
+      unit: usd_per_barrel
+    - question: Does the VIX breach 40 (crisis territory)?
+      metric: vix
+      unit: index
+    - question: What is the coalition naval response timeline?
+      metric: coalition_response
+      unit: status
+
+  metadata:
+    author: super_agents
+    version: "1.0"
+    category: geopolitical_maritime
+    severity: critical
+    related_scenarios:
+      - suez_canal_blockage
+      - taiwan_strait_tensions
+      - red_sea_houthi_disruption

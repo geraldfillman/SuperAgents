@@ -1,0 +1,13 @@
+[
+  {
+    "finding_time": "2026-03-15T07:05:31",
+    "asset": "PRAGMATA",
+    "company": "Capcom",
+    "finding_type": "release_date_detected",
+    "severity": "info",
+    "summary": "Steam release date April 16, 2026",
+    "source_url": "store.steampowered.com",
+    "confidence": "primary",
+    "action_required": false
+  }
+]

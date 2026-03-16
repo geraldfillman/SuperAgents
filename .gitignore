@@ -1,0 +1,99 @@
+# Environment & secrets
+.env
+.env.*
+*.key
+*.pem
+*.p12
+secrets/
+credentials/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.env.bak
+
+# Data directories (may contain sensitive scraped data)
+data/raw/
+data/processed/
+data/tmp/
+tmp*/
+*.sqlite3
+*.db
+
+# Test & coverage artifacts
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Crucix sidecar (Node.js)
+crucix/node_modules/
+crucix/runs/
+crucix/.env
+
+# MiroFish runtime
+.venv-mirofish/
+_reviews/
+
+# Simulation run outputs (regenerable)
+runs/simulations/
+
+# Pytest temp
+.pytest-tmp/
+pytest-cache-files-*/
+
+# Build
+*.so

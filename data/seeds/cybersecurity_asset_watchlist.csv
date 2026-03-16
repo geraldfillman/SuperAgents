@@ -1,0 +1,5 @@
+vendor,product,cve_id,priority,notes
+Microsoft,Windows,,high,Track broad enterprise endpoint exposure.
+Cisco,Adaptive Security Appliance,,high,Track network edge exposure.
+Ivanti,Connect Secure,,critical,Track edge appliance exploitation themes.
+,,CVE-2025-0282,critical,Track a high-profile edge exploitation case.

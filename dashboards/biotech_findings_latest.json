@@ -1,0 +1,24 @@
+[
+  {
+    "finding_time": "2026-03-15T07:00:42",
+    "asset": "Barzolvolimab",
+    "company": "Celldex",
+    "finding_type": "pdufa_date_detected",
+    "severity": "high",
+    "summary": "PDUFA date April 28, 2026 confirmed",
+    "source_url": "sec.gov",
+    "confidence": "secondary",
+    "action_required": true
+  },
+  {
+    "finding_time": "2026-03-15T07:00:42",
+    "asset": "Libervant",
+    "company": "Aquestive",
+    "finding_type": "approval_granted",
+    "severity": "info",
+    "summary": "FDA approval confirmed",
+    "source_url": "api.fda.gov",
+    "confidence": "primary",
+    "action_required": false
+  }
+]

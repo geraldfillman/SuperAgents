@@ -1,0 +1,18 @@
+{
+  "agent_name": "renewable_energy",
+  "run_id": "20260315_130000",
+  "workflow_name": "calendar",
+  "task_name": "build_calendar",
+  "status": "running",
+  "started_at": "2026-03-16T14:56:32.682835",
+  "input_scope": [
+    "window:180d"
+  ],
+  "active_source": "data/processed/renewable_energy",
+  "progress": {
+    "completed": 1,
+    "total": 4
+  },
+  "current_focus": "Building calendar",
+  "latest_message": "Loaded interconnection events"
+}

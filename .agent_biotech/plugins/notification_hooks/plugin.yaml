@@ -1,0 +1,48 @@
+name: notification_hooks
+description: Send Slack/email alerts when catalyst triggers fire or important data changes
+version: "1.0.0"
+
+triggers:
+  - type: event
+    events:
+      - catalyst_within_7_days
+      - new_fda_approval
+      - new_crl_issued
+      - trial_status_change
+      - stale_record_alert
+
+channels:
+  slack:
+    enabled: false
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+
+  email:
+    enabled: false
+    smtp_host: "${SMTP_HOST}"
+    smtp_port: "${SMTP_PORT}"
+    smtp_user: "${SMTP_USER}"
+    smtp_password: "${SMTP_PASSWORD}"
+    recipients:
+      - "${ALERT_EMAIL_TO}"
+
+templates:
+  catalyst_alert: |
+    🧬 *Upcoming Catalyst Alert*
+    Ticker: {ticker}
+    Product: {product_name}
+    Catalyst: {catalyst_type}
+    Date: {date}
+    Source: {source_confidence}
+
+  approval_alert: |
+    ✅ *New FDA Approval*
+    Product: {product_name}
+    Sponsor: {sponsor}
+    Pathway: {pathway}
+    Date: {event_date}
+
+  crl_alert: |
+    ❌ *Complete Response Letter*
+    Product: {product_name}
+    Sponsor: {sponsor}
+    Date: {event_date}

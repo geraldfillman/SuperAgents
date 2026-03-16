@@ -1,0 +1,9 @@
+company_name,ticker,cik,primary_focus,priority,notes
+SoFi Technologies,SOFI,1818874,consumer lending and banking,high,Starter watchlist company already referenced in docs and scripts
+Affirm Holdings,AFRM,1820953,buy now pay later,high,Consumer credit and merchant network exposure
+PayPal Holdings,PYPL,1633917,digital payments,high,Large public payments platform with broad regulatory surface
+Block,XYZ,1512673,payments and merchant tools,high,Square and Cash App exposure across merchant and consumer flows
+Robinhood Markets,HOOD,1783879,brokerage and wallet,medium,Retail brokerage plus expanding fintech stack
+Nu Holdings,NU,1691493,digital banking,medium,Large Latin American neobank benchmark
+Marqeta,MQ,1571110,card issuing infrastructure,medium,Embedded finance infrastructure and partnership-heavy model
+Coinbase Global,COIN,1679788,crypto financial services,medium,Useful cross-check for enforcement and licensing monitoring

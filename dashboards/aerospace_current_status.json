@@ -1,0 +1,21 @@
+{
+  "agent_name": "aerospace",
+  "run_id": "20260315_120200",
+  "workflow_name": "weekly_review",
+  "task_name": "update_trl_status",
+  "status": "idle",
+  "started_at": "2026-03-15T13:28:49.356202",
+  "input_scope": [
+    "RKLB",
+    "ASTS",
+    "LUNR",
+    "MNTS"
+  ],
+  "active_source": "usaspending",
+  "progress": {
+    "completed": 0,
+    "total": 4
+  },
+  "current_focus": "Waiting for next scheduled run",
+  "latest_message": "Last run completed 2h ago"
+}

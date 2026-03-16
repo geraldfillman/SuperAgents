@@ -1,0 +1,123 @@
+# =============================================================================
+# Autonomous Vehicles & Robotics Agent -- Master Configuration
+# =============================================================================
+# Registers all skills, workflows, and schema for the
+# Autonomous Vehicles & Robotics Tracker agent.
+
+agent:
+  name: autonomous-vehicles-robotics-tracker
+  version: "0.1.0"
+  description: >
+    Asset-first tracking system for publicly traded autonomous vehicle and
+    robotics companies. Primary unit of analysis is the vehicle platform or
+    robotic system (L4 AV stack, delivery robot, humanoid robot), not the
+    company. Covers robotaxi, autonomous trucking, last-mile delivery,
+    warehouse robotics, and humanoid segments.
+
+# ---------------------------------------------------------------------------
+# Skills -- specialized capabilities the agent can invoke
+# ---------------------------------------------------------------------------
+skills:
+  - name: permit_tracker
+    path: skills/permit_tracker/scripts/fetch_av_permits.py
+    description: >
+      Query California DMV AV testing reports, NHTSA SGO crash reports,
+      and SEC EDGAR for NHTSA exemption petitions. Track permit status
+      across jurisdictions.
+
+  - name: safety_monitor
+    path: skills/safety_monitor/scripts/fetch_safety_reports.py
+    description: >
+      Fetch NHTSA Standing General Order (SGO) crash reports for AV
+      incidents and NHTSA recall data. Track disengagement rates,
+      miles between incidents, and crash reports.
+
+  - name: fleet_expansion_tracker
+    path: skills/fleet_expansion_tracker/scripts/fetch_fleet_data.py
+    description: >
+      Search SEC EDGAR EFTS for 10-Q/8-K filings with fleet size,
+      ride count, and miles-driven disclosures. Track operational
+      domain expansions and city launches.
+
+  - name: partnership_tracker
+    path: skills/partnership_tracker/scripts/fetch_partnerships.py
+    description: >
+      Search SEC EDGAR for 8-K filings mentioning autonomous vehicle
+      partnerships, OEM collaborations, sensor supplier agreements,
+      and fleet operator deals.
+
+  - name: financial_monitor
+    path: skills/financial_monitor/scripts/fetch_financials.py
+    description: >
+      Calculate cash runway and flag equity dilution risks from
+      SEC filings for AV and robotics companies.
+
+  - name: insider_tracker
+    path: skills/insider_tracker/scripts/monitor_form4.py
+    description: >
+      Track high-signal insider trades (Form 4s) for autonomous
+      vehicle and robotics companies.
+
+  - name: sec_filings_parser
+    path: skills/sec_filings_parser/scripts/search_edgar.py
+    description: >
+      Search SEC EDGAR for company filings by CIK, ticker, or
+      filing type. Supports full-text search across EDGAR filings.
+
+  - name: sec_filings_catalyst_extractor
+    path: skills/sec_filings_parser/scripts/extract_av_catalysts.py
+    description: >
+      Parse cached SEC filings for AV-specific catalysts including
+      new city launches, ODD expansions, NHTSA exemptions, and
+      fleet milestones.
+
+  - name: data_quality
+    path: skills/data_quality/scripts/audit_stale_records.py
+    description: >
+      Audit stale records, validate sources, and ensure data
+      integrity across all autonomous vehicle tracker tables.
+
+  - name: source_validator
+    path: skills/data_quality/scripts/validate_sources.py
+    description: >
+      Check all records for source integrity issues including
+      missing source URLs, unverified company-only disclosures,
+      and broken links.
+
+  - name: platform_scoring
+    path: skills/platform_scoring/scripts/score_platform.py
+    description: >
+      Score AV platforms on safety, coverage, partnership, and
+      financial dimensions. 0-10 scale per dimension with overall
+      composite score.
+
+  - name: calendar
+    path: skills/calendar/scripts/build_calendar.py
+    description: >
+      Build rolling calendar of permit renewals, city launches,
+      earnings dates, and regulatory milestones.
+
+# ---------------------------------------------------------------------------
+# Workflows -- automated research cadences
+# ---------------------------------------------------------------------------
+workflows:
+  - name: daily_update
+    path: workflows/daily_update.md
+    schedule: "0 7 * * 1-5"  # 7 AM ET, weekdays
+    description: >
+      Pull NHTSA safety reports, check 8-Ks for fleet/permit disclosures,
+      refresh permit status, update catalyst calendar.
+
+  - name: weekly_review
+    path: workflows/weekly_review.md
+    schedule: "0 9 * * 1"    # Monday 9 AM ET
+    description: >
+      Add new AV/robotics names, 90-day catalyst review, re-score
+      platforms, audit stale records.
+
+  - name: monthly_reconciliation
+    path: workflows/monthly_reconciliation.md
+    schedule: "0 9 1 * *"    # 1st of month, 9 AM ET
+    description: >
+      Reconcile SEC filings against platform records, archive
+      discontinued programs, rebuild segment coverage.

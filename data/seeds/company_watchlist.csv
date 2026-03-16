@@ -1,0 +1,23 @@
+company_name,ticker,cik,cage_code,ueid,primary_domain,primary_customer,priority,notes
+Rocket Lab USA,RKLB,0001819989,,,space,USSF,high,Small-lift launch + Photon satellite bus
+Intuitive Machines,LUNR,,,, space,NASA,high,Lunar landers and surface services
+AeroVironment,AVAV,0000825313,,,air,DoD,high,Tactical UAS and loitering munitions
+Kratos Defense & Security Solutions,KTOS,0001069974,,,air,DoD,high,Unmanned systems and hypersonic targets
+Planet Labs PBC,PL,,,, space,DoD,medium,High-cadence earth observation constellation
+Spire Global,SPIR,,,, space,DoD,medium,Multi-purpose LEO constellation for weather/AIS/ADS-B
+BlackSky Technology,BKSY,,,,space,DoD,high,High-revisit geospatial ISR constellation
+Redwire Corporation,RDW,,,,space,NASA,medium,In-space manufacturing and spacecraft components
+AST SpaceMobile,ASTS,,,,space,commercial,medium,Direct-to-device broadband satellite network
+Mercury Systems,MRCY,0000867840,,,cyber,DoD,high,Secure processing and defense electronics
+Moog Inc,MOG.A,0000067887,,,air,DoD,medium,Flight control actuation and spacecraft mechanisms
+Ducommun,DCO,0000030305,,,air,DoD,medium,Composite aerostructures and defense electronics
+Viasat,VSAT,0000797721,,,space,DoD,medium,Satellite communications and electronic warfare
+Momentus,MNTS,,,,space,NASA,low,In-space transportation and orbital services
+Mynaric AG,MYNA,,,,space,DoD,medium,Laser communication terminals for space and air
+Joby Aviation,JOBY,,,,air,DoD,medium,eVTOL autonomous air taxi platform
+Archer Aviation,ACHR,,,,air,DoD,low,eVTOL air mobility platform
+BWX Technologies,BWXT,,,,space,DoD,high,Nuclear thermal propulsion and microreactors
+CPI Aerostructures,CVU,0000723603,,,air,USAF,low,Fixed-wing aerostructure assemblies
+Satellogic,SATL,,,,space,DoD,low,Sub-meter multispectral satellite imagery
+Curtiss-Wright,CW,,,,air,DoD,medium,Defense electronics and naval platform systems
+Kaman Corporation,KMAN,,,,air,DoD,medium,Unmanned rotorcraft and aerospace distribution

@@ -1,0 +1,24 @@
+{
+  "agent_name": "renewable_energy",
+  "run_id": "20260315_195314",
+  "workflow_name": "calendar",
+  "task_name": "build_calendar",
+  "status": "completed",
+  "started_at": "2026-03-15T19:53:14.337220",
+  "completed_at": "2026-03-15T19:53:14.338913",
+  "duration_seconds": 0.0,
+  "inputs": {
+    "window_days": 30,
+    "ticker_filters": 0,
+    "sources_checked": 4
+  },
+  "outputs": {
+    "records_written": 0,
+    "files_written": 1
+  },
+  "findings": [],
+  "blockers": [],
+  "next_actions": [
+    "Review the renewable energy calendar and confirm which sectors still lack calendar coverage"
+  ]
+}

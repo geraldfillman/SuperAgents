@@ -1,0 +1,19 @@
+{
+  "agent_name": "fintech",
+  "run_id": "20260315_200017",
+  "workflow_name": "daily_update",
+  "task_name": "fetch_licenses",
+  "status": "failed",
+  "started_at": "2026-03-15T20:00:39.814254",
+  "input_scope": [
+    "SoFi Technologies"
+  ],
+  "active_source": "NMLS, OCC",
+  "progress": {
+    "completed": 1,
+    "total": 1
+  },
+  "current_focus": "Fintech licensing run finished",
+  "latest_message": "Fintech license collection failed for all requested company targets",
+  "blocker": "SoFi Technologies | NMLS: Client error '403 Forbidden' for url 'https://www.nmlsconsumeraccess.org/api/Search?searchText=SoFi+Technologies&pageSize=5'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403; SoFi Technologies | OCC: OCC returned a non-JSON response for the charter list; the current endpoint likely needs to be updated."
+}

@@ -1,0 +1,91 @@
+# =============================================================================
+# Commercial Space & Satellite Agent -- Master Configuration
+# =============================================================================
+# Registers all skills, workflows for the Commercial Space & Satellite
+# Tracker agent. Primary unit of analysis = spacecraft / constellation /
+# launch vehicle.
+
+agent:
+  name: commercial-space-tracker
+  version: "0.1.0"
+  description: >
+    Asset-first tracking system for publicly traded commercial space and
+    satellite companies. Primary unit of analysis is the spacecraft,
+    constellation, or launch vehicle -- not the company. Covers launch
+    providers, satellite operators, ground station networks, and space
+    station developers.
+
+# ---------------------------------------------------------------------------
+# Skills -- specialized capabilities the agent can invoke
+# ---------------------------------------------------------------------------
+skills:
+  - name: spectrum_tracker
+    path: skills/spectrum_tracker/scripts/fetch_spectrum_filings.py
+    description: Query FCC ECFS/IBFS API for satellite spectrum filings and license modifications
+
+  - name: launch_manifest_tracker
+    path: skills/launch_manifest_tracker/scripts/fetch_launch_manifest.py
+    description: Query Launch Library 2 API for upcoming and recent launch events
+
+  - name: constellation_monitor
+    path: skills/constellation_monitor/scripts/fetch_constellation_status.py
+    description: Search SEC EDGAR EFTS for 10-Q filings with satellite deployment counts
+
+  - name: faa_license_tracker
+    path: skills/faa_license_tracker/scripts/fetch_faa_licenses.py
+    description: Query FAA AST launch/reentry license data from the Federal Register
+
+  - name: sbir_tracker
+    path: skills/sbir_tracker/scripts/fetch_sbir_awards.py
+    description: Query USAspending.gov for SBIR/STTR awards related to space
+
+  - name: financial_monitor
+    path: skills/financial_monitor/scripts/fetch_financials.py
+    description: Calculate cash runway and flag equity dilution risks from SEC filings
+
+  - name: insider_tracker
+    path: skills/insider_tracker/scripts/monitor_form4.py
+    description: Track high-signal insider trades (Form 4s) around launch or contract milestones
+
+  - name: sec_filings_parser
+    path: skills/sec_filings_parser/scripts/search_edgar.py
+    description: Search SEC EDGAR for company filings by CIK, ticker, or filing type
+
+  - name: sec_catalyst_extractor
+    path: skills/sec_filings_parser/scripts/extract_space_catalysts.py
+    description: Parse cached SEC filings for space catalysts (launch, satellite deploy, spectrum grant, contract win)
+
+  - name: data_quality
+    path: skills/data_quality/scripts/audit_stale_records.py
+    description: Audit stale records, validate sources, ensure data integrity
+
+  - name: source_validator
+    path: skills/data_quality/scripts/validate_sources.py
+    description: Check all records for source integrity issues (missing URLs, unverified claims)
+
+  - name: spacecraft_scoring
+    path: skills/spacecraft_scoring/scripts/score_spacecraft.py
+    description: Score spacecraft on launch, constellation, revenue, and financial dimensions (0-10 each)
+
+  - name: calendar
+    path: skills/calendar/scripts/build_calendar.py
+    description: Build rolling calendar of launches, license milestones, earnings, and contract deadlines
+
+# ---------------------------------------------------------------------------
+# Workflows -- automated research cadences
+# ---------------------------------------------------------------------------
+workflows:
+  - name: daily_update
+    path: workflows/daily_update.md
+    schedule: "0 7 * * 1-5"   # 7 AM ET, weekdays
+    description: Pull launch manifest, check spectrum filings, refresh constellation status, update calendar
+
+  - name: weekly_review
+    path: workflows/weekly_review.md
+    schedule: "0 9 * * 1"     # Monday 9 AM ET
+    description: Add new names, 90-day catalyst review, re-score spacecraft, audit stale records
+
+  - name: monthly_reconciliation
+    path: workflows/monthly_reconciliation.md
+    schedule: "0 9 1 * *"     # 1st of month, 9 AM ET
+    description: Reconcile SEC filings, archive decommissioned spacecraft, rebuild segment coverage

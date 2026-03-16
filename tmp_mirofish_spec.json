@@ -1,0 +1,18 @@
+﻿{
+  "simulation_id": "sim_cli_demo",
+  "project_id": "proj_cli_demo",
+  "graph_id": "graph_cli_demo",
+  "simulation_requirement": "Model a short two-agent discussion.",
+  "agent_profiles": [
+    {
+      "name": "Alpha Analyst",
+      "bio": "Tracks product launches.",
+      "persona": "Posts concise analytical updates."
+    },
+    {
+      "name": "Bravo Builder",
+      "bio": "Follows community reactions.",
+      "persona": "Amplifies useful operator feedback."
+    }
+  ]
+}

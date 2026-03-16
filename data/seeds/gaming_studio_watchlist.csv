@@ -1,0 +1,6 @@
+company_name,ticker,sec_cik,country,primary_focus,priority,title_name,title_id,steam_app_id,platform,release_window,notes
+Electronic Arts,EA,,US,multi-platform publisher,high,Apex Legends,EA_APEX,1172470,PC/console,live,Starter gaming seed
+Take-Two Interactive,TTWO,,US,multi-label publisher,high,Sid Meier's Civilization VI,TTWO_CIV6,289070,PC,live,Starter gaming seed
+Motorsport Games,MSGM,,US,motorsport racing,medium,Le Mans Ultimate,MSGM_LMU,,PC,tracked,Starter gaming seed
+Capcom,CAPCOM,,JP,action and RPG publisher,high,PRAGMATA,CAPCOM_PRAGMATA,3357650,PC/console,upcoming,Grounded in current gaming run artifacts
+Square Enix,SQEX,,JP,RPG publisher,medium,FINAL FANTASY XIV Online,SQEX_FFXIV,39210,PC,live,Starter gaming seed

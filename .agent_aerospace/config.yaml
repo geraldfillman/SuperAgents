@@ -1,0 +1,71 @@
+agent:
+  name: aerospace-defense-tech-agent
+  version: "0.1.0"
+  description: >
+    Asset-first research system for aerospace and defense companies, centered on
+    systems, contract awards, test milestones, and budget exposure.
+
+skills:
+  - name: award_tracker
+    path: skills/award_tracker/SKILL.md
+    description: Track contract awards, modifications, and procurement vehicles
+
+  - name: trl_tracker
+    path: skills/trl_tracker/SKILL.md
+    description: Track maturity and test evidence for systems and programs
+
+  - name: sec_procurement_parser
+    path: skills/sec_procurement_parser/SKILL.md
+    description: Extract procurement and milestone language from SEC filings
+
+  - name: program_calendar
+    path: skills/program_calendar/SKILL.md
+    description: Build the rolling 90-day program milestone calendar
+
+  - name: financial_monitor
+    path: skills/financial_monitor/SKILL.md
+    description: Estimate runway and financing risk from company filings
+
+  - name: insider_tracker
+    path: skills/insider_tracker/SKILL.md
+    description: Track Form 4 signals around contract and test milestones
+
+  - name: budget_tracker
+    path: skills/budget_tracker/SKILL.md
+    description: Ingest official budget documents into normalized budget lines
+
+  - name: watchlist_ranker
+    path: skills/watchlist_ranker/SKILL.md
+    description: Rank tracked companies using scorecards, budget exposure, and execution evidence
+
+  - name: results_dashboard
+    path: skills/results_dashboard/SKILL.md
+    description: Build a static HTML dashboard from ranking, scorecard, and calendar outputs
+
+  - name: sbir_tracker
+    path: skills/sbir_tracker/SKILL.md
+    description: Track official SBIR awards for early-stage defense and space companies
+
+  - name: sam_pipeline_tracker
+    path: skills/sam_pipeline_tracker/SKILL.md
+    description: Track pre-award demand using SAM.gov opportunities and saved query manifests
+
+  - name: faa_license_tracker
+    path: skills/faa_license_tracker/SKILL.md
+    description: Track FAA licensing and stakeholder signals for space and launch names
+
+workflows:
+  - name: daily_update
+    path: workflows/daily_update.md
+    schedule: "0 7 * * 1-5"
+    description: Refresh awards, filings, and near-term milestones
+
+  - name: weekly_review
+    path: workflows/weekly_review.md
+    schedule: "0 9 * * 1"
+    description: Re-rank systems, review budget exposure, and refresh priorities
+
+  - name: monthly_reconciliation
+    path: workflows/monthly_reconciliation.md
+    schedule: "0 9 1 * *"
+    description: Reconcile contract history, budgets, and liquidity assumptions

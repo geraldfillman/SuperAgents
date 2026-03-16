@@ -1,0 +1,13 @@
+{
+  "name": "storefront",
+  "transport": "https",
+  "sources": [
+    "Steam store metadata",
+    "Steam player-concurrency endpoints",
+    "manual or licensed storefront exports"
+  ],
+  "notes": [
+    "Public v1 should focus on release dates, tags, supported platforms, and concurrency.",
+    "Do not assume access to wishlist-addition data unless the source is explicitly available."
+  ]
+}

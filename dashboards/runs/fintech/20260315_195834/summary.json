@@ -1,0 +1,28 @@
+{
+  "agent_name": "fintech",
+  "run_id": "20260315_195834",
+  "workflow_name": "daily_update",
+  "task_name": "fetch_licenses",
+  "status": "failed",
+  "started_at": "2026-03-15T19:58:34.620203",
+  "completed_at": "2026-03-15T19:58:34.990372",
+  "duration_seconds": 0.4,
+  "inputs": {
+    "companies": 1,
+    "state_filters": 0,
+    "request_limit": 5
+  },
+  "outputs": {
+    "records_written": 0,
+    "companies_with_errors": 1,
+    "sources_checked": 2
+  },
+  "findings": [],
+  "blockers": [
+    "SoFi Technologies: Client error '403 Forbidden' for url 'https://www.nmlsconsumeraccess.org/api/Search?searchText=SoFi+Technologies&pageSize=5'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
+  ],
+  "next_actions": [
+    "Review the latest fintech licensing summary in the dashboard",
+    "Follow up on companies with no current licensing signals or request errors"
+  ]
+}

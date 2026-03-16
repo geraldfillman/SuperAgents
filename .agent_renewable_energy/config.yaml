@@ -1,0 +1,88 @@
+# =============================================================================
+# Renewable Energy & Battery Tech Agent -- Master Configuration
+# =============================================================================
+# Registers all skills, workflows for the
+# Renewable Energy & Battery Technology Project Tracker agent.
+
+agent:
+  name: renewable-energy-tracker
+  version: "0.1.0"
+  description: >
+    Asset-first tracking system for renewable energy and battery technology
+    projects. Primary unit of analysis is the energy project (solar farm,
+    wind farm, battery factory, grid storage), not the company.
+
+# ---------------------------------------------------------------------------
+# Skills -- specialized capabilities the agent can invoke
+# ---------------------------------------------------------------------------
+skills:
+  - name: interconnection_tracker
+    path: skills/interconnection_tracker/scripts/fetch_interconnection_queue.py
+    description: Query EIA and ISO queue data for generator interconnection status and milestones
+
+  - name: ppa_monitor
+    path: skills/ppa_monitor/scripts/fetch_ppa_filings.py
+    description: Search SEC EDGAR for 8-K filings mentioning power purchase agreements
+
+  - name: ira_credit_tracker
+    path: skills/ira_credit_tracker/scripts/fetch_ira_credits.py
+    description: Query DOE/IRS data on IRA clean energy tax credits via Federal Register API
+
+  - name: project_milestone_tracker
+    path: skills/project_milestone_tracker/scripts/fetch_milestones.py
+    description: Search SEC EDGAR for project milestone disclosures (COD, first power, groundbreaking)
+
+  - name: doe_loan_tracker
+    path: skills/doe_loan_tracker/scripts/fetch_doe_loans.py
+    description: Query USAspending.gov for DOE Loan Programs Office awards
+
+  - name: financial_monitor
+    path: skills/financial_monitor/scripts/fetch_financials.py
+    description: Calculate cash runway and flag equity dilution risks from SEC filings
+
+  - name: insider_tracker
+    path: skills/insider_tracker/scripts/monitor_form4.py
+    description: Track high-signal insider trades (Form 4s) for renewable energy companies
+
+  - name: sec_filings_parser
+    path: skills/sec_filings_parser/scripts/search_edgar.py
+    description: Search SEC EDGAR for filings and retrieve company submission data
+
+  - name: sec_filings_parser_extract
+    path: skills/sec_filings_parser/scripts/extract_energy_catalysts.py
+    description: Parse cached SEC filings to extract energy-specific catalyst disclosures
+
+  - name: data_quality_audit
+    path: skills/data_quality/scripts/audit_stale_records.py
+    description: Audit stale records, scan tables for records with no updates in 90+ days
+
+  - name: data_quality_validate
+    path: skills/data_quality/scripts/validate_sources.py
+    description: Validate source integrity across all tables, check URLs and confidence levels
+
+  - name: project_scoring
+    path: skills/project_scoring/scripts/score_project.py
+    description: Score projects on interconnection, offtake, IRA credit, and financial dimensions
+
+  - name: calendar
+    path: skills/calendar/scripts/build_calendar.py
+    description: Build forward-looking calendar of CODs, PPA expirations, and permit deadlines
+
+# ---------------------------------------------------------------------------
+# Workflows -- automated research cadences
+# ---------------------------------------------------------------------------
+workflows:
+  - name: daily_update
+    path: workflows/daily_update.md
+    schedule: "0 7 * * 1-5"  # 7 AM ET, weekdays
+    description: Check 8-Ks, refresh interconnection queues, DOE announcements, update calendar
+
+  - name: weekly_review
+    path: workflows/weekly_review.md
+    schedule: "0 9 * * 1"    # Monday 9 AM ET
+    description: Re-score projects, audit stale records, update calendar, review pipeline
+
+  - name: monthly_reconciliation
+    path: workflows/monthly_reconciliation.md
+    schedule: "0 9 1 * *"    # 1st of month, 9 AM ET
+    description: Full filing sweep, reconcile capacity pipeline, archive decommissioned projects

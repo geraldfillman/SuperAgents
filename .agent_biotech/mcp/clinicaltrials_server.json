@@ -1,0 +1,13 @@
+{
+  "name": "clinicaltrials",
+  "transport": "https",
+  "base_url": "https://clinicaltrials.gov/api/v2",
+  "auth": {
+    "type": "none"
+  },
+  "notes": [
+    "ClinicalTrials.gov v2 API: 100 requests/minute.",
+    "Endpoints: /studies for search, /studies/{nctId} for detail.",
+    "Fallback: AACT SQLite database for bulk queries."
+  ]
+}

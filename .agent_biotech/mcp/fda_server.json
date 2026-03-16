@@ -1,0 +1,14 @@
+{
+  "name": "fda",
+  "transport": "https",
+  "base_url": "https://api.fda.gov",
+  "auth": {
+    "type": "api_key_param",
+    "env_var": "OPENFDA_API_KEY",
+    "param_name": "api_key"
+  },
+  "notes": [
+    "openFDA API: 240 requests/minute with key, 40 without.",
+    "Endpoints: /drug/drugsfda, /drug/enforcement, /device/510k, /device/pma."
+  ]
+}

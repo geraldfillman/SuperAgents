@@ -1,0 +1,13 @@
+{
+  "name": "sec_edgar",
+  "transport": "https",
+  "base_url": "https://data.sec.gov",
+  "auth": {
+    "type": "user_agent_header",
+    "env_var": "SEC_EDGAR_USER_AGENT"
+  },
+  "notes": [
+    "Use SEC submissions JSON for company filing metadata.",
+    "Use full-text search or filing document fetches for milestone extraction."
+  ]
+}
