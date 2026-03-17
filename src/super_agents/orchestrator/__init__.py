@@ -9,6 +9,7 @@ from __future__ import annotations
 from super_agents.orchestrator.tmux_manager import TmuxManager
 from super_agents.orchestrator.orchestrator import Orchestrator, get_orchestrator
 from super_agents.orchestrator.scheduler import Scheduler, get_scheduler
+from super_agents.orchestrator.gateway_client import GatewayClient, get_gateway_client
 
 __all__ = [
     "TmuxManager",
@@ -16,4 +17,6 @@ __all__ = [
     "get_orchestrator",
     "Scheduler",
     "get_scheduler",
+    "GatewayClient",
+    "get_gateway_client",
 ]

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from collections.abc import Iterable
 from datetime import datetime
 from pathlib import Path
@@ -562,6 +563,42 @@ def discover_simulation_results(
         })
 
     return results
+
+
+# ---------------------------------------------------------------------------
+# MCP Gateway helpers
+# ---------------------------------------------------------------------------
+
+MCP_SERVER_URL = os.environ.get("MCP_SERVER_URL", "http://localhost:9000")
+
+
+@st.cache_data(ttl=30)
+def load_gateway_health(server_url: str = MCP_SERVER_URL) -> dict[str, Any]:
+    """Fetch /health from the MCP server. Returns error dict when unreachable."""
+    status = _http_status(f"{server_url}/health")
+    if status is None:
+        return {"status": "offline", "error": f"unreachable at {server_url}"}
+    try:
+        import json as _json
+        from urllib.request import urlopen as _urlopen
+        with _urlopen(f"{server_url}/health", timeout=2.0) as resp:
+            data = _json.loads(resp.read())
+        return data if isinstance(data, dict) else {"status": "ok"}
+    except Exception:
+        return {"status": "unknown", "error": f"HTTP {status}"}
+
+
+@st.cache_data(ttl=30)
+def load_gateway_tools(server_url: str = MCP_SERVER_URL) -> list[dict[str, Any]]:
+    """Fetch /tools from the MCP server. Returns empty list when unreachable."""
+    try:
+        import json as _json
+        from urllib.request import urlopen as _urlopen
+        with _urlopen(f"{server_url}/tools", timeout=5.0) as resp:
+            data = _json.loads(resp.read())
+        return data if isinstance(data, list) else []
+    except Exception:
+        return []
 
 
 def datetime_from_path(path: Path) -> str | None:

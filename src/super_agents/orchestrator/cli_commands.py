@@ -197,6 +197,90 @@ def cmd_schedule_run() -> None:
 
 
 # ---------------------------------------------------------------------------
+# Gateway commands
+# ---------------------------------------------------------------------------
+
+def cmd_gateway_status() -> None:
+    """Print MCP server health (agents, skills, tools count)."""
+    from super_agents.orchestrator.gateway_client import get_gateway_client
+
+    client = get_gateway_client()
+    result = client.health()
+
+    if "error" in result:
+        print(f"[OFFLINE] MCP server unreachable — {result['error']}", file=sys.stderr)
+        return
+
+    print("\nMCP Server Status")
+    print("=" * 40)
+    print(f"  Status:  {result.get('status', 'unknown')}")
+    print(f"  Agents:  {result.get('agents', '?')}")
+    print(f"  Skills:  {result.get('skills', '?')}")
+    print(f"  Tools:   {result.get('tools', '?')}")
+
+
+def cmd_gateway_tools(agent_filter: str | None = None) -> None:
+    """Print all tools registered on the MCP server, optionally filtered by agent prefix.
+
+    Args:
+        agent_filter: Agent name to filter by (e.g. ``biotech``). Shows all when None.
+    """
+    from super_agents.orchestrator.gateway_client import get_gateway_client
+
+    client = get_gateway_client()
+    tools = client.list_tools()
+
+    if not tools:
+        print("No tools found (server may be offline).", file=sys.stderr)
+        return
+
+    if agent_filter:
+        prefix = f"{agent_filter}__"
+        tools = [t for t in tools if t["name"].startswith(prefix)]
+        if not tools:
+            print(f"No tools found for agent {agent_filter!r}.", file=sys.stderr)
+            return
+
+    header = f"{'TOOL':<60} DESCRIPTION"
+    print(header)
+    print("-" * min(len(header), 120))
+    for tool in tools:
+        name = tool.get("name", "")
+        desc = tool.get("description", "")[:60]
+        print(f"{name:<60} {desc}")
+    print(f"\n{len(tools)} tool(s) listed.")
+
+
+def cmd_gateway_call(tool_name: str, args: list[str] | None = None) -> None:
+    """Call a tool on the MCP server and print its output.
+
+    Args:
+        tool_name: Full tool name, e.g. ``biotech__fda_tracker__fetch_drug_approvals``.
+        args: Extra CLI arguments forwarded to the script.
+    """
+    from super_agents.orchestrator.gateway_client import get_gateway_client
+
+    client = get_gateway_client()
+    print(f"Calling tool: {tool_name}")
+    if args:
+        print(f"Args: {' '.join(args)}")
+    print("-" * 60)
+
+    result = client.call_tool(tool_name, args=args or [])
+
+    if "error" in result:
+        print(f"[ERROR] {result['error']}", file=sys.stderr)
+        return
+
+    print(result.get("output", "(no output)"))
+    exit_code = result.get("exit_code", 0)
+    if exit_code != 0:
+        print(f"\n[EXIT {exit_code}]", file=sys.stderr)
+        if result.get("stderr"):
+            print(result["stderr"], file=sys.stderr)
+
+
+# ---------------------------------------------------------------------------
 # Monitor command
 # ---------------------------------------------------------------------------
 

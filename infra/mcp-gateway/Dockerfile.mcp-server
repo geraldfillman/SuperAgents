@@ -1,0 +1,24 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# curl needed for the Docker healthcheck
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python deps first (layer-cached unless pyproject.toml changes)
+COPY pyproject.toml .
+RUN pip install --no-cache-dir -e ".[mcp]"
+
+# Source package — copied here so `import super_agents` works at build time.
+# At runtime the entire project root is bind-mounted over /app (read-only),
+# so .agent_* directories and all scripts are available without being baked in.
+COPY src/ src/
+
+ENV PYTHONPATH=/app/src
+ENV MCP_SERVER_PORT=9000
+
+EXPOSE 9000
+
+CMD ["python", "-m", "super_agents.mcp.server"]

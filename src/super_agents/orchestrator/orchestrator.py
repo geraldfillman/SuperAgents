@@ -22,6 +22,7 @@ from collections.abc import Callable
 from typing import Any
 
 from super_agents.orchestrator.tmux_manager import TmuxManager, SESSION_PREFIX
+from super_agents.orchestrator.gateway_client import GatewayClient, get_gateway_client
 from super_agents.data.events import EventBus, get_bus
 from super_agents.data.unified_store import UnifiedStore, get_store
 
@@ -40,10 +41,12 @@ class Orchestrator:
         tmux: TmuxManager | None = None,
         store: UnifiedStore | None = None,
         bus: EventBus | None = None,
+        gateway: GatewayClient | None = None,
     ) -> None:
         self._tmux = tmux or TmuxManager()
         self._store = store or get_store()
         self._bus = bus or get_bus()
+        self._gateway = gateway or get_gateway_client()
 
     # -- Spawning -----------------------------------------------------------
 
@@ -248,6 +251,32 @@ class Orchestrator:
                 time.sleep(interval_seconds)
         except KeyboardInterrupt:
             logger.info("monitor: stopped by user")
+
+    # -- Gateway (HTTP tool routing) ----------------------------------------
+
+    def gateway_status(self) -> dict[str, Any]:
+        """Return the MCP server health dict, or ``{"error": ...}`` if unreachable."""
+        return self._gateway.health()
+
+    def list_remote_tools(self) -> list[dict[str, Any]]:
+        """Return all tools registered on the MCP server.
+
+        Returns an empty list when the server is unreachable.
+        """
+        return self._gateway.list_tools()
+
+    def call_tool(self, tool_name: str, *, args: list[str] | None = None) -> dict[str, Any]:
+        """Run a tool on the MCP server and return its output.
+
+        Args:
+            tool_name: Namespaced tool name, e.g. ``biotech__fda_tracker__fetch_drug_approvals``.
+            args: CLI arguments to forward to the script.
+
+        Returns:
+            Dict with ``output``, ``exit_code``, and ``stderr`` keys,
+            or ``{"error": ...}`` on failure.
+        """
+        return self._gateway.call_tool(tool_name, args=args)
 
     # -- Workflows ----------------------------------------------------------
 

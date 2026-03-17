@@ -1,0 +1,41 @@
+services:
+  mcp-gateway:
+    image: ghcr.io/github/gh-aw-mcpg:latest
+    ports:
+      - "${MCP_GATEWAY_PORT:-8000}:${MCP_GATEWAY_PORT:-8000}"
+    volumes:
+      - ./infra/mcp-gateway/config.json:/app/config.json:ro
+    environment:
+      MCP_GATEWAY_API_KEY: "${MCP_GATEWAY_API_KEY}"
+      MCP_GATEWAY_PORT: "${MCP_GATEWAY_PORT:-8000}"
+      MCP_SERVER_PORT: "${MCP_SERVER_PORT:-9000}"
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - mcp-net
+
+  mcp-server:
+    build:
+      context: .
+      dockerfile: infra/mcp-gateway/Dockerfile.mcp-server
+    expose:
+      - "${MCP_SERVER_PORT:-9000}"
+    environment:
+      MCP_SERVER_PORT: "${MCP_SERVER_PORT:-9000}"
+    volumes:
+      - .:/app:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${MCP_SERVER_PORT:-9000}/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+    networks:
+      - mcp-net
+
+networks:
+  mcp-net:
+    driver: bridge

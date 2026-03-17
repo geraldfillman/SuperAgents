@@ -589,6 +589,15 @@ def build_parser() -> argparse.ArgumentParser:
 
     orch_sub.add_parser("schedule-run", help="Start the scheduler daemon loop")
 
+    orch_sub.add_parser("gateway-status", help="Show MCP server health (agents, skills, tools)")
+
+    orch_gw_tools = orch_sub.add_parser("gateway-tools", help="List tools on the MCP server")
+    orch_gw_tools.add_argument("--agent", "-a", help="Filter tools by agent name (e.g. biotech)")
+
+    orch_gw_call = orch_sub.add_parser("gateway-call", help="Call a tool on the MCP server")
+    orch_gw_call.add_argument("tool", help="Tool name (e.g. biotech__fda_tracker__fetch_drug_approvals)")
+    orch_gw_call.add_argument("extra", nargs=argparse.REMAINDER, help="Arguments forwarded to the script")
+
     # simulate command
     sim_parser = subparsers.add_parser("simulate", help="Run a scenario simulation")
     sim_parser.add_argument("scenario", type=str, help="Path to scenario YAML file")
@@ -960,6 +969,9 @@ def cmd_orchestrate(args: argparse.Namespace) -> int:
     """Handle orchestrate subcommands."""
     from super_agents.orchestrator.cli_commands import (
         cmd_fleet_status,
+        cmd_gateway_call,
+        cmd_gateway_status,
+        cmd_gateway_tools,
         cmd_monitor,
         cmd_read,
         cmd_schedule_add,
@@ -1002,6 +1014,13 @@ def cmd_orchestrate(args: argparse.Namespace) -> int:
         )
     elif subcmd == "schedule-run":
         cmd_schedule_run()
+    elif subcmd == "gateway-status":
+        cmd_gateway_status()
+    elif subcmd == "gateway-tools":
+        cmd_gateway_tools(agent_filter=getattr(args, "agent", None))
+    elif subcmd == "gateway-call":
+        extra = [a for a in (args.extra or []) if a != "--"]
+        cmd_gateway_call(args.tool, args=extra or None)
     else:
         print(f"Unknown orchestrate command: {subcmd}", file=sys.stderr)
         return 1

@@ -1,0 +1,70 @@
+{
+  "gateway": {
+    "port": "${MCP_GATEWAY_PORT}",
+    "auth": {
+      "type": "bearer",
+      "token_env": "MCP_GATEWAY_API_KEY"
+    }
+  },
+  "servers": {
+    "super-agents": {
+      "url": "http://mcp-server:${MCP_SERVER_PORT}/mcp",
+      "transport": "http",
+      "description": "Single multi-agent MCP server — all 13 sector agents"
+    }
+  },
+  "guards": {
+    "biotech": {
+      "server": "super-agents",
+      "allow_only": ["biotech__*"]
+    },
+    "aerospace": {
+      "server": "super-agents",
+      "allow_only": ["aerospace__*"]
+    },
+    "gaming": {
+      "server": "super-agents",
+      "allow_only": ["gaming__*"]
+    },
+    "cybersecurity": {
+      "server": "super-agents",
+      "allow_only": ["cybersecurity__*"]
+    },
+    "fintech": {
+      "server": "super-agents",
+      "allow_only": ["fintech__*"]
+    },
+    "quantum": {
+      "server": "super-agents",
+      "allow_only": ["quantum__*"]
+    },
+    "rare_earth": {
+      "server": "super-agents",
+      "allow_only": ["rare_earth__*"]
+    },
+    "renewable_energy": {
+      "server": "super-agents",
+      "allow_only": ["renewable_energy__*"]
+    },
+    "space": {
+      "server": "super-agents",
+      "allow_only": ["space__*"]
+    },
+    "meddevice": {
+      "server": "super-agents",
+      "allow_only": ["meddevice__*"]
+    },
+    "autonomous_vehicles": {
+      "server": "super-agents",
+      "allow_only": ["autonomous_vehicles__*"]
+    },
+    "cannabis_psychedelics": {
+      "server": "super-agents",
+      "allow_only": ["cannabis_psychedelics__*"]
+    },
+    "simulation": {
+      "server": "super-agents",
+      "allow_only": ["simulation__*"]
+    }
+  }
+}
