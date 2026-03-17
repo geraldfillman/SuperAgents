@@ -148,16 +148,37 @@ def run_sweep() -> Path | None:
         Path to the saved briefing JSON, or None on failure.
     """
     if not is_crucix_installed():
-        raise RuntimeError("Crucix not installed. Run setup first.")
+        raise RuntimeError(
+            "Crucix not installed. Run 'python -m super_agents crucix setup' first."
+        )
+
+    # Pre-check: verify Node.js is available
+    if shutil.which(CRUCIX_NODE) is None:
+        raise RuntimeError(
+            f"Node.js ({CRUCIX_NODE!r}) not found on PATH. "
+            "Install Node.js 18+ to use Crucix."
+        )
+
+    # Pre-check: verify the sweep script exists
+    sweep_script = CRUCIX_DIR / "apis" / "save-briefing.mjs"
+    if not sweep_script.exists():
+        raise RuntimeError(
+            f"Crucix sweep script not found: {sweep_script}. "
+            "Run 'python -m super_agents crucix setup' to re-install."
+        )
 
     logger.info("Running Crucix sweep...")
-    result = subprocess.run(
-        [CRUCIX_NODE, "apis/save-briefing.mjs"],
-        cwd=str(CRUCIX_DIR),
-        capture_output=True,
-        text=True,
-        timeout=300,  # 5 min max for a full sweep
-    )
+    try:
+        result = subprocess.run(
+            [CRUCIX_NODE, "apis/save-briefing.mjs"],
+            cwd=str(CRUCIX_DIR),
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+    except subprocess.TimeoutExpired:
+        logger.error("Crucix sweep timed out after 120s")
+        return None
 
     if result.returncode != 0:
         logger.error("Crucix sweep failed: %s", result.stderr[:500])

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 
-from adt_agent.trl import build_trl_signal, persist_trl_bundle
+from super_agents.aerospace.trl import build_trl_signal, persist_trl_bundle
 
 
 def main() -> None:

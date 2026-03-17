@@ -5,9 +5,9 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from adt_agent.io_utils import read_json
-from adt_agent.procurement import extract_procurement_signals, read_filing_text, write_signal_file
-from adt_agent.sec import find_latest_filing_manifest
+from super_agents.aerospace.io_utils import read_json
+from super_agents.aerospace.procurement import extract_procurement_signals, read_filing_text, write_signal_file
+from super_agents.aerospace.sec import find_latest_filing_manifest
 
 
 def _load_manifest_metadata(manifest_path: Path | None) -> dict[str, dict]:

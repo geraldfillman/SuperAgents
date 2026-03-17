@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from adt_agent.budgets import download_budget_pdf, parse_budget_pdf, save_budget_lines
+from super_agents.aerospace.budgets import download_budget_pdf, parse_budget_pdf, save_budget_lines
 
 
 def main() -> None:

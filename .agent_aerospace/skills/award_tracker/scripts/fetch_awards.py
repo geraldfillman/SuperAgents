@@ -5,15 +5,15 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from adt_agent.awards import build_manual_award_query, build_watchlist_manifests, save_award_query_manifest
-from adt_agent.usaspending import (
+from super_agents.aerospace.awards import build_manual_award_query, build_watchlist_manifests, save_award_query_manifest
+from super_agents.aerospace.usaspending import (
     fetch_award_search_pages,
     match_awards_to_companies,
     normalize_award_match,
     save_normalized_awards,
     save_raw_award_pages,
 )
-from adt_agent.watchlist import CompanyRecord, find_company, load_company_watchlist
+from super_agents.aerospace.watchlist import CompanyRecord, find_company, load_company_watchlist
 
 
 def _resolve_companies(args: argparse.Namespace) -> list[CompanyRecord]:

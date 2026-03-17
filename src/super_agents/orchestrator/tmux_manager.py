@@ -64,9 +64,18 @@ class TmuxManager:
 
     def _require_tmux(self) -> None:
         if not self.has_tmux():
+            import platform as _plat
+            if _plat.system() == "Windows":
+                raise RuntimeError(
+                    "tmux is not available on Windows natively. "
+                    "Options: (1) use WSL: wsl -- tmux, "
+                    "(2) run individual scripts with 'python -m super_agents run', "
+                    "(3) install tmux via MSYS2/Git Bash."
+                )
             raise RuntimeError(
                 "tmux is not installed or not on PATH. "
-                "Install it with: apt-get install tmux"
+                "Install it with: apt-get install tmux (Debian/Ubuntu) "
+                "or brew install tmux (macOS)."
             )
 
     # -- Session listing ----------------------------------------------------

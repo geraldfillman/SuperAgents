@@ -30,14 +30,14 @@ def _build_search_configs(
     curated: dict[str, list[tuple[str, str, list[str]]]] = {
         "biotech": [
             ("fda_tracker", "fetch_drug_approvals", ["--days", "30", "--limit", "10"]),
-            ("clinicaltrials_scraper", "fetch_trials", ["--status", "RECRUITING", "--limit", "5"]),
+            ("clinicaltrials_scraper", "fetch_trials", ["--condition", "cancer", "--limit", "5"]),
             ("sec_filings_parser", "search_edgar", ["--cik", "1682852", "--types", "10-K"]),
         ],
         "gaming": [
             ("storefront_monitor", "fetch_storefront_metrics", ["--appid", "570"]),
         ],
         "aerospace": [
-            ("award_tracker", "fetch_awards", ["--days", "30", "--limit", "10"]),
+            ("award_tracker", "fetch_awards", ["--days", "30", "--watchlist"]),
         ],
     }
 

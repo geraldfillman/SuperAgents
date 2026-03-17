@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 
-from adt_agent.sec import fetch_and_cache_sec_filings
+from super_agents.aerospace.sec import fetch_and_cache_sec_filings
 
 
 def main() -> None:

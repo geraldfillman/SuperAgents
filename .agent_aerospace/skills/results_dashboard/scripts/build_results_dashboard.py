@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from adt_agent.dashboard import build_results_dashboard
+from super_agents.aerospace.dashboard import build_results_dashboard
 
 
 def main() -> None:

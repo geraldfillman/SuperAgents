@@ -4,6 +4,7 @@ Parse cached SEC filings for energy-specific catalysts
 (PPA signing, interconnection advance, IRA credit, COD).
 """
 
+import argparse
 import re
 import json
 import os

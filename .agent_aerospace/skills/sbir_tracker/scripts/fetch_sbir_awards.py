@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 
-from adt_agent.sbir import (
+from super_agents.aerospace.sbir import (
     build_sbir_query_manifest,
     fetch_sbir_award_pages,
     match_sbir_awards_to_companies,
@@ -13,7 +13,7 @@ from adt_agent.sbir import (
     save_raw_sbir_pages,
     save_sbir_query_manifest,
 )
-from adt_agent.watchlist import CompanyRecord, find_company, load_company_watchlist
+from super_agents.aerospace.watchlist import CompanyRecord, find_company, load_company_watchlist
 
 
 def _resolve_companies(args: argparse.Namespace) -> list[CompanyRecord]:

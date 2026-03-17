@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 
-from adt_agent.faa import (
+from super_agents.aerospace.faa import (
     FAA_PAGE_CATALOG,
     build_faa_query_manifest,
     fetch_faa_pages,
@@ -13,7 +13,7 @@ from adt_agent.faa import (
     save_faa_query_manifest,
     save_faa_signals,
 )
-from adt_agent.watchlist import CompanyRecord, find_company, load_company_watchlist, load_system_watchlist
+from super_agents.aerospace.watchlist import CompanyRecord, find_company, load_company_watchlist, load_system_watchlist
 
 
 def _resolve_companies(args: argparse.Namespace) -> list[CompanyRecord]:

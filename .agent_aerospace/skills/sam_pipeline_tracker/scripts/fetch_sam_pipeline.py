@@ -13,7 +13,7 @@ if str(_PROJECT_ROOT) not in sys.path:
 
 from super_agents.common.env import require_env
 
-from adt_agent.sam import (
+from super_agents.aerospace.sam import (
     build_sam_query_manifest,
     fetch_sam_opportunity_pages,
     normalize_pipeline_results,
@@ -21,7 +21,7 @@ from adt_agent.sam import (
     save_raw_sam_pages,
     save_sam_query_manifest,
 )
-from adt_agent.watchlist import CompanyRecord, find_company, load_company_watchlist, load_system_watchlist
+from super_agents.aerospace.watchlist import CompanyRecord, find_company, load_company_watchlist, load_system_watchlist
 
 
 def _resolve_companies(args: argparse.Namespace) -> list[CompanyRecord]:

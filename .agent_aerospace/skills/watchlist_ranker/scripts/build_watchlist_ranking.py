@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import argparse
 
-from adt_agent.ranking import build_watchlist_ranking, save_watchlist_ranking
-from adt_agent.scorecards import build_company_scorecards, save_company_scorecards
-from adt_agent.watchlist import load_company_watchlist, load_system_watchlist
+from super_agents.aerospace.ranking import build_watchlist_ranking, save_watchlist_ranking
+from super_agents.aerospace.scorecards import build_company_scorecards, save_company_scorecards
+from super_agents.aerospace.watchlist import load_company_watchlist, load_system_watchlist
 
 
 def main() -> None:

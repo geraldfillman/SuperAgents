@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import argparse
 
-from adt_agent.insiders import fetch_and_parse_form4s
-from adt_agent.watchlist import load_company_watchlist
+from super_agents.aerospace.insiders import fetch_and_parse_form4s
+from super_agents.aerospace.watchlist import load_company_watchlist
 
 
 def main() -> None:

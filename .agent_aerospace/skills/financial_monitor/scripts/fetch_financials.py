@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import argparse
 
-from adt_agent.financials import fetch_and_build_financial_snapshot, fetch_watchlist_financial_snapshots
-from adt_agent.watchlist import load_company_watchlist
+from super_agents.aerospace.financials import fetch_and_build_financial_snapshot, fetch_watchlist_financial_snapshots
+from super_agents.aerospace.watchlist import load_company_watchlist
 
 
 def main() -> None:

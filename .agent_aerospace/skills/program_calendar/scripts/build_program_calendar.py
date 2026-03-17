@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from adt_agent.calendar import build_program_calendar, write_calendar_snapshot
+from super_agents.aerospace.calendar import build_program_calendar, write_calendar_snapshot
 
 
 def main() -> None:

@@ -5,6 +5,7 @@ Queries the openFDA drug approvals endpoint and populates regulatory_events.
 
 import os
 import sys
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -27,6 +28,30 @@ API_KEY = optional_env("OPENFDA_API_KEY")
 RAW_DIR = DRUG_APPROVALS_RAW_DIR
 
 
+def _fetch_with_retry(
+    url: str, params: dict, max_retries: int = 3, timeout: int = 30
+) -> dict:
+    """Fetch JSON from a URL with retry on 5xx errors."""
+    for attempt in range(max_retries):
+        try:
+            response = httpx.get(url, params=params, timeout=timeout)
+            if response.status_code >= 500 and attempt < max_retries - 1:
+                wait = 2 ** attempt
+                print(f"  [RETRY] Server returned {response.status_code}, retrying in {wait}s...")
+                time.sleep(wait)
+                continue
+            response.raise_for_status()
+            return response.json()
+        except httpx.ConnectError as exc:
+            if attempt < max_retries - 1:
+                wait = 2 ** attempt
+                print(f"  [RETRY] Connection error, retrying in {wait}s...")
+                time.sleep(wait)
+                continue
+            raise SystemExit(f"[FAIL] Could not connect to {url}: {exc}") from exc
+    raise SystemExit(f"[FAIL] {url} returned server errors after {max_retries} retries")
+
+
 def fetch_recent_approvals(days: int = 30, limit: int = 100) -> list[dict]:
     """Fetch drug approvals from the last N days via openFDA."""
     ensure_biotech_directory(RAW_DIR)
@@ -41,9 +66,8 @@ def fetch_recent_approvals(days: int = 30, limit: int = 100) -> list[dict]:
     if API_KEY:
         params["api_key"] = API_KEY
 
-    response = httpx.get(OPENFDA_BASE, params=params, timeout=30)
-    response.raise_for_status()
-    data = response.json()
+    data = _fetch_with_retry(OPENFDA_BASE, params)
+
 
     # Save raw response
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
