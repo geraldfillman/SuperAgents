@@ -80,6 +80,51 @@ def get_status_icon(status: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Navigation group constants (Phase 3.1)
+# ---------------------------------------------------------------------------
+
+NAV_GROUPS: dict[str, list[str]] = {
+    "Monitoring": [
+        "Fleet Overview",
+        "Agent Detail",
+        "Run History",
+    ],
+    "Intelligence": [
+        "Findings Board",
+        "Signal Explorer",
+        "Risk Dashboard",
+    ],
+    "Simulations": [
+        "Scenario Builder",
+        "MiroFish Bundles",
+    ],
+    "Operations": [
+        "Cybersecurity",
+        "LLM Metrics",
+    ],
+    "Settings": [
+        "Settings",
+    ],
+}
+
+# Page file mapping (label → page filename stem)
+NAV_PAGE_FILES: dict[str, str] = {
+    "Fleet Overview": "01_Fleet_Overview",
+    "Agent Detail": "02_Agent_Detail",
+    "Run History": "03_Run_History",
+    "Findings Board": "04_Findings_Board",
+    "Signal Explorer": "05_Signal_Explorer",
+    "Risk Dashboard": "06_Risk_Dashboard",
+    "Calendars": "07_Calendars",
+    "Scenario Builder": "08_Simulations",
+    "MiroFish Bundles": "08_Simulations",
+    "Cybersecurity": "09_Cybersecurity",
+    "LLM Metrics": "10_LLM_Metrics",
+    "Settings": "11_Settings",
+}
+
+
+# ---------------------------------------------------------------------------
 # apply_custom_css kept for backward compat but now a no-op (CSS in setup_page)
 # ---------------------------------------------------------------------------
 

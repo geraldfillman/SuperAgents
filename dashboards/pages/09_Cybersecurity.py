@@ -11,8 +11,11 @@ from dashboards.dashboard_data import (
     load_agent_findings,
     load_agent_latest_run,
     load_agent_status,
+    load_all_findings,
 )
 from dashboards.components.theme import setup_page, apply_custom_css, get_severity_icon
+from dashboards.components.filters import render_filters
+from dashboards.components.alerts import render_alert_bar
 
 AGENT_NAME = "cybersecurity"
 KEV_LATEST_PATH = DASHBOARDS_DIR / "cybersecurity_kev_latest.json"
@@ -20,15 +23,19 @@ PATCH_CALENDAR_PATH = DASHBOARDS_DIR / "cybersecurity_patch_calendar.json"
 
 
 def _load_records(path) -> list[dict]:
-    """Load a JSON array from *path*, returning [] on failure."""
     data = _safe_load_json(path)
     if not isinstance(data, list):
         return []
     return [item for item in data if isinstance(item, dict)]
 
 
-setup_page("Cybersecurity", "\U0001f512")
+setup_page("Cybersecurity", "🔒")
 apply_custom_css()
+
+render_filters(show_agent_filter=False)
+
+findings_all = load_all_findings()
+render_alert_bar(findings_all)
 
 st.header("Cybersecurity Intelligence")
 st.caption("CISA KEV feed, watchlist hits, and patch due dates.")
@@ -48,6 +55,7 @@ if watchlist_only:
 # ---------------------------------------------------------------------------
 # Visualizations
 # ---------------------------------------------------------------------------
+
 st.divider()
 vcol1, vcol2 = st.columns(2)
 
@@ -79,6 +87,7 @@ st.divider()
 # ---------------------------------------------------------------------------
 # Metrics
 # ---------------------------------------------------------------------------
+
 watchlist_hits = sum(1 for r in kev_records if r.get("watchlist_match"))
 critical_hits = sum(1 for r in kev_records if r.get("severity") == "critical")
 due_soon = len(calendar_events)
@@ -93,6 +102,7 @@ m4.metric("Patch Due Soon", due_soon)
 # ---------------------------------------------------------------------------
 # Tabs
 # ---------------------------------------------------------------------------
+
 tab1, tab2, tab3 = st.tabs(["KEV Feed", "Patch Calendar", "Findings"])
 
 with tab1:

@@ -1,18 +1,31 @@
-"""LLM Operations — Model usage, cost, and performance."""
+"""LLM Metrics — Model usage, cost, and performance."""
+
+from __future__ import annotations
 
 import streamlit as st
 import pandas as pd
-from dashboards.dashboard_data import load_all_runs
-from dashboards.components.theme import setup_page, apply_custom_css
 
-setup_page("LLM Operations", "🤖")
+from dashboards.dashboard_data import load_all_runs, load_all_findings
+from dashboards.components.theme import setup_page, apply_custom_css
+from dashboards.components.filters import render_filters, get_active_filters
+from dashboards.components.alerts import render_alert_bar
+from dashboards.components.charts import cost_burn_chart
+
+setup_page("LLM Metrics", "🤖")
 apply_custom_css()
 
-st.header("LLM Operations")
+render_filters(show_agent_filter=True)
 
+findings = load_all_findings()
+render_alert_bar(findings)
+
+st.header("LLM Metrics")
 st.info(
     "Usage metrics extracted from agent run summaries. Configure tracing for deeper insights."
 )
+
+filters = get_active_filters()
+
 
 def load_model_usage() -> list[dict]:
     """Extract model usage from run summaries."""
@@ -21,16 +34,23 @@ def load_model_usage() -> list[dict]:
         if run.get("model_used"):
             usage.append(
                 {
-                    "agent": run.get("agent_name", ""),
+                    "agent": run.get("agent_name", run.get("agent", "")),
                     "model": run.get("model_used", ""),
                     "cost": run.get("model_cost_usd", 0),
+                    "cost_usd": run.get("model_cost_usd", 0),
                     "duration": run.get("duration_seconds", 0),
-                    "task": run.get("task_name", ""),
+                    "task": run.get("task_name", run.get("skill", "")),
+                    "timestamp": run.get("started_at", run.get("completed_at", "")),
                 }
             )
     return usage
 
+
 usage = load_model_usage()
+
+# Apply agent filter
+if filters["agents"] and usage:
+    usage = [u for u in usage if u.get("agent") in filters["agents"]]
 
 if usage:
     col1, col2, col3 = st.columns(3)
@@ -41,15 +61,22 @@ if usage:
     col3.metric("LLM-Assisted Runs", len(usage))
 
     st.divider()
+
+    # Cost burn chart
+    st.subheader("Cost Burn Over Time")
+    burn_fig = cost_burn_chart(usage)
+    st.plotly_chart(burn_fig, use_container_width=True)
+
+    st.divider()
     st.subheader("Usage Analysis")
     usage_df = pd.DataFrame(usage)
-    
+
     ucol1, ucol2 = st.columns(2)
     with ucol1:
         st.write("**Cost by Model**")
         cost_by_model = usage_df.groupby("model")["cost"].sum()
         st.bar_chart(cost_by_model)
-        
+
     with ucol2:
         st.write("**Runs by Agent**")
         runs_by_agent = usage_df.groupby("agent").size()
@@ -63,7 +90,10 @@ else:
 
 st.divider()
 st.subheader("Model Configuration")
-st.code("""llm:
+st.code(
+    """llm:
   default_model: "claude-3-5-sonnet-latest"
   extraction_model: "gpt-4o-mini"
-  fallback_model: "gemini-2.0-flash" """, language="yaml")
+  fallback_model: "gemini-2.0-flash" """,
+    language="yaml",
+)
