@@ -552,6 +552,43 @@ def build_parser() -> argparse.ArgumentParser:
 
     crucix_sub.add_parser("sources", help="List all Crucix sources and sector mappings")
 
+    # orchestrate command
+    orch_parser = subparsers.add_parser("orchestrate", help="Manage agent fleet via tmux orchestrator")
+    orch_sub = orch_parser.add_subparsers(dest="orch_command", required=True)
+
+    orch_sub.add_parser("status", help="Show all running agent sessions")
+
+    orch_spawn = orch_sub.add_parser("spawn", help="Spawn an agent in a tmux session")
+    orch_spawn.add_argument("--agent", "-a", required=True, help="Agent name")
+    orch_spawn.add_argument("--skill", "-s", required=True, help="Skill name")
+    orch_spawn.add_argument("--script", "-r", required=True, help="Script name")
+    orch_spawn.add_argument("extra", nargs=argparse.REMAINDER, help="Extra args for the script")
+
+    orch_read = orch_sub.add_parser("read", help="Read output from an agent session")
+    orch_read.add_argument("session", help="Session name (e.g. sa_biotech_fda_tracker)")
+    orch_read.add_argument("--lines", "-n", type=int, default=50, help="Lines to capture")
+
+    orch_send = orch_sub.add_parser("send", help="Send input to an agent session")
+    orch_send.add_argument("session", help="Session name")
+    orch_send.add_argument("message", help="Message to send")
+
+    orch_stop = orch_sub.add_parser("stop", help="Stop an agent session (or all with --all)")
+    orch_stop.add_argument("session", nargs="?", help="Session name (omit for --all)")
+    orch_stop.add_argument("--all", action="store_true", help="Stop all agent sessions")
+
+    orch_sub.add_parser("monitor", help="Start monitoring loop for all agent sessions")
+
+    orch_sched_list = orch_sub.add_parser("schedule-list", help="List all registered schedules")
+
+    orch_sched_add = orch_sub.add_parser("schedule-add", help="Add a scheduled agent task")
+    orch_sched_add.add_argument("--name", required=True, help="Schedule name")
+    orch_sched_add.add_argument("--cron", required=True, help="Cron expression (e.g. '0 7 * * 1-5')")
+    orch_sched_add.add_argument("--agent", "-a", required=True, help="Agent name")
+    orch_sched_add.add_argument("--skill", "-s", required=True, help="Skill name")
+    orch_sched_add.add_argument("--script", "-r", required=True, help="Script name")
+
+    orch_sub.add_parser("schedule-run", help="Start the scheduler daemon loop")
+
     # simulate command
     sim_parser = subparsers.add_parser("simulate", help="Run a scenario simulation")
     sim_parser.add_argument("scenario", type=str, help="Path to scenario YAML file")
@@ -919,6 +956,58 @@ def _auto_register_rules(engine: "SimulationEngine", scenario: "Scenario") -> No
                 pass
 
 
+def cmd_orchestrate(args: argparse.Namespace) -> int:
+    """Handle orchestrate subcommands."""
+    from super_agents.orchestrator.cli_commands import (
+        cmd_fleet_status,
+        cmd_monitor,
+        cmd_read,
+        cmd_schedule_add,
+        cmd_schedule_list,
+        cmd_schedule_run,
+        cmd_send,
+        cmd_spawn,
+        cmd_stop,
+    )
+
+    subcmd = args.orch_command
+
+    if subcmd == "status":
+        cmd_fleet_status()
+    elif subcmd == "spawn":
+        cmd_spawn(args.agent, args.skill, args.script, args.extra or [])
+    elif subcmd == "read":
+        cmd_read(args.session, lines=args.lines)
+    elif subcmd == "send":
+        cmd_send(args.session, args.message)
+    elif subcmd == "stop":
+        if args.all:
+            cmd_stop(session=None)
+        elif args.session:
+            cmd_stop(session=args.session)
+        else:
+            print("Specify a session name or --all", file=sys.stderr)
+            return 1
+    elif subcmd == "monitor":
+        cmd_monitor()
+    elif subcmd == "schedule-list":
+        cmd_schedule_list()
+    elif subcmd == "schedule-add":
+        cmd_schedule_add(
+            name=args.name,
+            cron=args.cron,
+            agent=args.agent,
+            skill=args.skill,
+            script=args.script,
+        )
+    elif subcmd == "schedule-run":
+        cmd_schedule_run()
+    else:
+        print(f"Unknown orchestrate command: {subcmd}", file=sys.stderr)
+        return 1
+    return 0
+
+
 def main() -> int:
     """Entry point."""
     parser = build_parser()
@@ -930,5 +1019,6 @@ def main() -> int:
         "search": cmd_search,
         "crucix": cmd_crucix,
         "simulate": cmd_simulate,
+        "orchestrate": cmd_orchestrate,
     }
     return commands[args.command](args)
